@@ -70,7 +70,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
                 DateTime.Now.AddDays(-rand.Next(1,3)),
                 worker.GetName(),
                 (byte)rand.Next(1, 10),
-                "some text"
+                "sometext"
             );
             var result = repository.InsertTimeRecord(timeRecord, worker.GetRole());
             Assert.IsTrue(result);
