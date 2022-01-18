@@ -96,8 +96,12 @@ namespace RSaitov.SoftwareDevelop.Persistence
                 while ((s = file.ReadLine()) != null)
                 {
                     var stringMas = s.Split(',');
-                    var timeRecord = new TimeRecord(Convert.ToDateTime(s[0]), s[1].ToString(),
-                        Convert.ToByte(s[2]), s[3].ToString());
+                    var timeRecord = new TimeRecord(
+                        Convert.ToDateTime(stringMas[0]),
+                        stringMas[1].ToString(),
+                        Convert.ToByte(stringMas[2]),
+                        stringMas[3].ToString()
+);
                     list.Add(timeRecord);
                 }
             }
