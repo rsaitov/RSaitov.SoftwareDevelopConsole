@@ -2,13 +2,13 @@
 
 namespace RSaitov.SoftwareDevelop.Domain
 {
-    public class WorkerReport
+    public class ReportSingleWorker
     {
         public IEnumerable<TimeRecord> TimeRecords { get;  }
         public decimal Salary { get; }
         public int Hours { get; }
 
-        public WorkerReport(IEnumerable<TimeRecord> timeRecords, decimal salary, int hours)
+        public ReportSingleWorker(IEnumerable<TimeRecord> timeRecords, decimal salary, int hours)
         {
             TimeRecords = timeRecords;
             Salary = salary;

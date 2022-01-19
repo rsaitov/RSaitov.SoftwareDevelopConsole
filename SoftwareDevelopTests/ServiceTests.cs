@@ -128,23 +128,32 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
         }
 
         [Test]
-        public void GetReportWorker_Success()
+        public void GetReportSingleWorker_Success()
         {
             IWorker sender = GetFirstWorker(UserRole.Manager);
             IWorker worker = GetFirstWorker(UserRole.Manager);
 
-            var report = service.GetReport(sender, worker, DateTime.Now.AddDays(-14).Date, DateTime.Now.Date);
+            var report = service.GetReportSingleWorker(sender, worker, DateTime.Now.AddDays(-14).Date, DateTime.Now.Date);
             Assert.NotNull(report);
         }
 
         [Test]
-        public void GetReportWorkerSenderNoAccess_Fail()
+        public void GetReportSingleWorkerSenderNoAccess_Fail()
         {
             IWorker sender = GetFirstWorker(UserRole.Employee);
             IWorker worker = GetFirstWorker(UserRole.Manager);
 
-            var report = service.GetReport(sender, worker, DateTime.Now.AddDays(-14).Date, DateTime.Now.Date);
+            var report = service.GetReportSingleWorker(sender, worker, DateTime.Now.AddDays(-14).Date, DateTime.Now.Date);
             Assert.Null(report);
+        }
+
+        [Test]
+        public void GetReportAllWorkers_Success()
+        {
+            IWorker sender = GetFirstWorker(UserRole.Manager);
+
+            var report = service.GetReportAllWorkers(sender, DateTime.Now.AddDays(-14).Date, DateTime.Now.Date);
+            Assert.NotNull(report);
         }
     }
 }

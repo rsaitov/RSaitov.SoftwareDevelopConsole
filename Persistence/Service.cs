@@ -23,7 +23,8 @@ namespace RSaitov.SoftwareDevelop.Persistence
 
         bool AddTimeRecord(IWorker sender, TimeRecord timeRecord);
 
-        WorkerReport GetReport(IWorker sender, IWorker worker, DateTime start, DateTime end);
+        ReportSingleWorker GetReportSingleWorker(IWorker sender, IWorker worker, DateTime start, DateTime end);
+        ReportAllWorkers GetReportAllWorkers(IWorker sender, DateTime start, DateTime end);
     }
     public class Service : IService
     {
@@ -76,7 +77,7 @@ namespace RSaitov.SoftwareDevelop.Persistence
         public IWorker SelectWorker(string name) => _repository.SelectWorker(name);
         public IEnumerable<IWorker> SelectWorkers() => _repository.SelectWorkers();
 
-        public WorkerReport GetReport(IWorker sender, IWorker worker, DateTime start, DateTime end)
+        public ReportSingleWorker GetReportSingleWorker(IWorker sender, IWorker worker, DateTime start, DateTime end)
         {
             var senderPersonMatchTimeRecord = string.Equals(sender.GetName(), worker.GetName());
 
@@ -91,7 +92,18 @@ namespace RSaitov.SoftwareDevelop.Persistence
 
             var salary = worker.GetSalary(workerTimeRecords);
             var hours = workerTimeRecords.Sum(x => x.Hours);
-            return new WorkerReport(workerTimeRecords, salary, hours);
+            return new ReportSingleWorker(workerTimeRecords, salary, hours);
+        }
+
+        public ReportAllWorkers GetReportAllWorkers(IWorker sender, DateTime start, DateTime end)
+        {
+            var workers = _repository.SelectWorkers();
+            var workerReports = new List<ReportSingleWorker>();
+            foreach (var worker in workers)
+                workerReports.Add(GetReportSingleWorker(sender, worker, start, end));
+            var hoursTotal = workerReports.Sum(x => x.Hours);
+            var salaryTotal = workerReports.Sum(x => x.Salary);
+            return new ReportAllWorkers(workerReports, hoursTotal, salaryTotal);
         }
     }
 }
