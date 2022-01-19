@@ -1,6 +1,7 @@
 ﻿using RSaitov.SoftwareDevelop.Domain;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 /*
  * Аргумент (IWorker sender) = отправитель действия для проверки доступа к действию
@@ -21,6 +22,8 @@ namespace RSaitov.SoftwareDevelop.Persistence
         IEnumerable<IWorker> SelectWorkers();
 
         bool AddTimeRecord(IWorker sender, TimeRecord timeRecord);
+
+        WorkerReport GetReport(IWorker sender, IWorker worker, DateTime start, DateTime end);
     }
     public class Service : IService
     {
@@ -31,6 +34,8 @@ namespace RSaitov.SoftwareDevelop.Persistence
             new HashSet<UserRole> { UserRole.Manager };
         private HashSet<UserRole> userRolesAllowedToCreateTimeRecordsForAnyDateInPast =
             new HashSet<UserRole> { UserRole.Manager, UserRole.Employee };
+        private HashSet<UserRole> userRolesAllowedToViewReportAllWorkers =
+            new HashSet<UserRole> { UserRole.Manager };
 
         public Service()
         {
@@ -70,5 +75,23 @@ namespace RSaitov.SoftwareDevelop.Persistence
 
         public IWorker SelectWorker(string name) => _repository.SelectWorker(name);
         public IEnumerable<IWorker> SelectWorkers() => _repository.SelectWorkers();
+
+        public WorkerReport GetReport(IWorker sender, IWorker worker, DateTime start, DateTime end)
+        {
+            var senderPersonMatchTimeRecord = string.Equals(sender.GetName(), worker.GetName());
+
+            if (!senderPersonMatchTimeRecord &&
+                !userRolesAllowedToViewReportAllWorkers.Contains(sender.GetRole()))
+                return null;
+
+            var roleTimeRecords = _repository.SelectTimeRecords(worker.GetRole());
+            var workerTimeRecords = roleTimeRecords
+                .Where(x => string.Equals(x.Name, worker.GetName(), StringComparison.OrdinalIgnoreCase)
+                && x.Date.Date >= start.Date && x.Date.Date <= end.Date);
+
+            var salary = worker.GetSalary(workerTimeRecords);
+            var hours = workerTimeRecords.Sum(x => x.Hours);
+            return new WorkerReport(workerTimeRecords, salary, hours);
+        }
     }
 }

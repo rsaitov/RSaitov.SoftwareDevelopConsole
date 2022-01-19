@@ -126,5 +126,15 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
                 Assert.AreEqual(result, results[counter++]);
             }
         }
+
+        [Test]
+        public void GetReportWorker()
+        {
+            IWorker sender = GetFirstWorker(UserRole.Manager);
+            IWorker worker = GetFirstWorker(UserRole.Manager);
+
+            var report = service.GetReport(sender, worker, DateTime.Now.AddDays(-14).Date, DateTime.Now.Date);
+            Assert.NotNull(report);
+        }
     }
 }

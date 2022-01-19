@@ -14,7 +14,7 @@ namespace RSaitov.SoftwareDevelop.Domain
         public UserRole GetRole() => UserRole.Employee;
         public string GetName() => Name;
 
-        public decimal GetSalary(List<TimeRecord> timeRecords)
+        public decimal GetSalary(IEnumerable<TimeRecord> timeRecords)
         {
             throw new NotImplementedException();
         }

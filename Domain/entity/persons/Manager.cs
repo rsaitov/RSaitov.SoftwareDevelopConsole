@@ -13,7 +13,7 @@ namespace RSaitov.SoftwareDevelop.Domain
         public UserRole GetRole() => UserRole.Manager;
         public string GetName() => Name;
 
-        public decimal GetSalary(List<TimeRecord> timeRecords)
+        public decimal GetSalary(IEnumerable<TimeRecord> timeRecords)
         {
             var payPerHour = MonthSalary / Settings.WorkingHoursPerMonth;
             var bonusPerDay = Settings.WorkingHoursPerDay * (MonthBonus / Settings.WorkingHoursPerMonth);

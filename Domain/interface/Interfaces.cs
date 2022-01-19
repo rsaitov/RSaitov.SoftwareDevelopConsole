@@ -12,6 +12,6 @@ namespace RSaitov.SoftwareDevelop.Domain
     {
         string GetName();
         UserRole GetRole();
-        decimal GetSalary(List<TimeRecord> timeRecords);
+        decimal GetSalary(IEnumerable<TimeRecord> timeRecords);
     }
 }
