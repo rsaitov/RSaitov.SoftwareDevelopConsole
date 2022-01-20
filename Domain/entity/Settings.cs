@@ -16,5 +16,10 @@ namespace RSaitov.SoftwareDevelop.Domain
         /// </summary>
         public const byte WorkingHoursPerDay = 8;
 
+        /// <summary>
+        /// Зарплата фрилансера в час
+        /// </summary>
+        public const decimal FreelancerSalaryPerHour = 1000;
+
     }
 }

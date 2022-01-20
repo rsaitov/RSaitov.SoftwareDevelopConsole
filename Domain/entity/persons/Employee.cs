@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace RSaitov.SoftwareDevelop.Domain
 {
@@ -16,7 +15,26 @@ namespace RSaitov.SoftwareDevelop.Domain
 
         public decimal GetSalary(IEnumerable<TimeRecord> timeRecords)
         {
-            throw new NotImplementedException();
+            var payPerHour = MonthSalary / Settings.WorkingHoursPerMonth;
+            var bonusPerHour = payPerHour * 2;
+            var hours = timeRecords.Sum(x => x.Hours);
+
+            var totalPay = 0m;
+
+            foreach (var timeRecord in timeRecords)
+            {
+                if (timeRecord.Hours <= Settings.WorkingHoursPerDay)
+                {
+                    totalPay += timeRecord.Hours * payPerHour;
+                }
+                else
+                {
+                    totalPay += Settings.WorkingHoursPerDay * payPerHour 
+                        + bonusPerHour * (timeRecord.Hours - Settings.WorkingHoursPerDay);
+                }
+            }
+
+            return totalPay;
         }
     }
 }

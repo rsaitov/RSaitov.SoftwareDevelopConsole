@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace RSaitov.SoftwareDevelop.Domain
 {
@@ -15,7 +15,8 @@ namespace RSaitov.SoftwareDevelop.Domain
 
         public decimal GetSalary(IEnumerable<TimeRecord> timeRecords)
         {
-            throw new NotImplementedException();
+            var hours = timeRecords.Sum(x => x.Hours);
+            return hours * Settings.FreelancerSalaryPerHour;
         }
     }
 }
