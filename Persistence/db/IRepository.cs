@@ -6,7 +6,7 @@ namespace RSaitov.SoftwareDevelop.Data
     {
         WorkerDTO SelectWorker(string name);
         IEnumerable<WorkerDTO> SelectWorkers();
-        bool InsertWorker(WorkerDTO person);
+        bool InsertWorker(WorkerDTO worker);
 
         IEnumerable<TimeRecord> SelectTimeRecords(WorkerRole workerRole);
         bool InsertTimeRecord(TimeRecord timeRecord, WorkerRole workerRole);
