@@ -1,20 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using RSaitov.SoftwareDevelop.Domain;
+﻿using NUnit.Framework;
 using RSaitov.SoftwareDevelop.Data;
+using RSaitov.SoftwareDevelop.Domain;
+using System;
+using System.Linq;
 
 namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
 {
     public class ServiceTests
     {
         private IService service;
+        private IRepository repository = new MockRepository();
         [SetUp]
         public void Setup()
-        {
-            service = new Service();
+        {            
+            //repository = new TextFileDB();
+            repository = new MockRepository();
+            service = new Service(repository);
         }
 
         private IWorker GetFirstWorker(WorkerRole workerRole) => service.SelectWorkers().FirstOrDefault(x => x.GetRole() == workerRole);

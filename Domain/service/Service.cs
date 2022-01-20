@@ -21,7 +21,7 @@ namespace RSaitov.SoftwareDevelop.Domain
 {
     public class Service : IService
     {
-        private IRepository _repository = new TextFileDB();
+        private readonly IRepository _repository;
         private HashSet<WorkerRole> workerRolesAllowedToCreateWorkers =
             new HashSet<WorkerRole> { WorkerRole.Manager };
         private HashSet<WorkerRole> workerRolesAllowedToCreateTimeRecordsForAllWorkers =
@@ -31,8 +31,9 @@ namespace RSaitov.SoftwareDevelop.Domain
         private HashSet<WorkerRole> workerRolesAllowedToViewReportAllWorkers =
             new HashSet<WorkerRole> { WorkerRole.Manager };
 
-        public Service()
+        public Service(IRepository repository)
         {
+            _repository = repository;
         }
 
         public bool CreateWorker(IWorker sender, IWorker worker)
@@ -67,12 +68,14 @@ namespace RSaitov.SoftwareDevelop.Domain
             return _repository.InsertTimeRecord(timeRecord, timeRecordWorker.GetRole());
         }
 
-        public IWorker SelectWorker(string name) { 
+        public IWorker SelectWorker(string name)
+        {
             var worker = _repository.SelectWorker(name);
             return ReferenceEquals(null, worker) ? null :
                 WorkerFactory.GenerateWorker(worker.Name, worker.Role);
         }
-        public IEnumerable<IWorker> SelectWorkers() { 
+        public IEnumerable<IWorker> SelectWorkers()
+        {
             var workerDTOs = _repository.SelectWorkers();
 
             var list = new HashSet<IWorker>();
@@ -111,6 +114,13 @@ namespace RSaitov.SoftwareDevelop.Domain
             var hoursTotal = workerReports.Sum(x => x.Hours);
             var salaryTotal = workerReports.Sum(x => x.Salary);
             return new ReportAllWorkers(workerReports, hoursTotal, salaryTotal);
+        }
+
+        public IEnumerable<TimeRecord> GetTimeRecords(IWorker worker)
+        {
+            var timeRecordsRole = _repository.SelectTimeRecords(worker.GetRole());
+            return timeRecordsRole.Where(x =>
+                string.Equals(worker.GetName(), x.Name, StringComparison.OrdinalIgnoreCase));
         }
     }
 }
