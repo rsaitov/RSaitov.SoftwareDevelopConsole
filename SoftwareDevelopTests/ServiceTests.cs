@@ -9,10 +9,13 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
     public class ServiceTests
     {
         private IService service;
+        private IRepository repository = new MockRepository();
         [SetUp]
         public void Setup()
-        {
-            service = new Service(new TextFileDB());
+        {            
+            //repository = new TextFileDB();
+            repository = new MockRepository();
+            service = new Service(repository);
         }
 
         private IWorker GetFirstWorker(WorkerRole workerRole) => service.SelectWorkers().FirstOrDefault(x => x.GetRole() == workerRole);

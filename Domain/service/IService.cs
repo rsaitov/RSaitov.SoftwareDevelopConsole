@@ -20,6 +20,7 @@ namespace RSaitov.SoftwareDevelop.Domain
         IWorker SelectWorker(string name);
         IEnumerable<IWorker> SelectWorkers();
 
+        IEnumerable<TimeRecord> GetTimeRecords(IWorker worker);
         bool AddTimeRecord(IWorker sender, TimeRecord timeRecord);
 
         ReportSingleWorker GetReportSingleWorker(IWorker sender, IWorker worker, DateTime start, DateTime end);

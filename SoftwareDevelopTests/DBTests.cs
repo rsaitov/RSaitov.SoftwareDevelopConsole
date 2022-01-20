@@ -12,7 +12,8 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
         [SetUp]
         public void Setup()
         {
-            repository = new TextFileDB();
+            //repository = new TextFileDB();
+            repository = new MockRepository();
         }
 
         [Test]
@@ -30,7 +31,6 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
             var firstUser = users.First();
             var user = repository.SelectWorker(firstUser.Name);
             Assert.AreEqual(user.Name, firstUser.Name);
-            Assert.AreEqual(user.Name, firstUser.Name);
         }
         [Test]
         public void SelectAllPersons_Success()
@@ -42,6 +42,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
         }
 
         //закомментирован для избежания дублирования сотрудников
+        //проверка дубликтов слоем выше
         //[Test]
         //public void InsertRandomPerson_Success()
         //{

@@ -2,12 +2,53 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RSaitov.SoftwareDevelop.Data.db
+namespace RSaitov.SoftwareDevelop.Data
 {
     public class MockRepository : IRepository
     {
         private List<WorkerDTO> _workers;
         private List<TimeRecord> _timeRecords = new List<TimeRecord>();
+
+        public MockRepository()
+        {
+            _workers = new List<WorkerDTO>() { 
+                new WorkerDTO("Schumacher", WorkerRole.Manager),
+                new WorkerDTO("Prost", WorkerRole.Employee),
+                new WorkerDTO("Senna", WorkerRole.Freelancer),
+            };
+            _timeRecords = new List<TimeRecord>() { 
+                //1250 * 6 = 7500
+                //1250 * 8 + 1000  = 11000
+                //1250 * 7 = 8750
+                //1250 * 8 = 10000
+                //total 37250
+
+                new TimeRecord(DateTime.Now.AddDays(-1), "Schumacher", 6, "lorem ipsum"),
+                new TimeRecord(DateTime.Now.AddDays(-2), "Schumacher", 14, "lorem ipsum"),
+                new TimeRecord(DateTime.Now.AddDays(-3), "Schumacher", 7, "lorem ipsum"),
+                new TimeRecord(DateTime.Now.AddDays(-4), "Schumacher", 8, "lorem ipsum"),
+
+                //750 * 8 = 6000
+                //750 * 8 + 4 * 1500 = 12000
+                //750 * 8 + 2 * 1500 = 9000
+                //750 * 8 + 1500 = 7500
+                //total 34500
+                new TimeRecord(DateTime.Now.AddDays(-1), "Prost", 8, "lorem ipsum"),
+                new TimeRecord(DateTime.Now.AddDays(-2), "Prost", 12, "lorem ipsum"),
+                new TimeRecord(DateTime.Now.AddDays(-3), "Prost", 10, "lorem ipsum"),
+                new TimeRecord(DateTime.Now.AddDays(-4), "Prost", 9, "lorem ipsum"),
+
+                //1000 * 7 = 7000
+                //1000 * 8 = 8000
+                //1000 * 9 = 9000
+                //1000 * 2 = 2000
+                //total 26000
+                new TimeRecord(DateTime.Now.AddDays(-1), "Senna", 7, "lorem ipsum"),
+                new TimeRecord(DateTime.Now.AddDays(-2), "Senna", 8, "lorem ipsum"),
+                new TimeRecord(DateTime.Now.AddDays(-3), "Senna", 9, "lorem ipsum"),
+                new TimeRecord(DateTime.Now.AddDays(-4), "Senna", 2, "lorem ipsum"),
+            };
+        }
 
         public bool InsertTimeRecord(TimeRecord timeRecord, WorkerRole workerRole)
         {
