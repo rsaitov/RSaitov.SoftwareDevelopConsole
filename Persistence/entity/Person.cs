@@ -1,4 +1,4 @@
-﻿namespace RSaitov.SoftwareDevelop.Domain
+﻿namespace RSaitov.SoftwareDevelop.Data
 {
     public class Person
     {

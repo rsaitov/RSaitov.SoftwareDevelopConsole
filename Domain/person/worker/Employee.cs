@@ -1,17 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using RSaitov.SoftwareDevelop.Data;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace RSaitov.SoftwareDevelop.Domain
 {
-    public class Employee : Person, IWorker
+    public class Employee : WorkerDTO, IWorker
     {
         public decimal MonthSalary => 120000;
-        public Employee(string name) : base(name)
+        public Employee(string name) : base(name, WorkerRole.Employee)
         {
 
         }
 
-        public UserRole GetRole() => UserRole.Employee;
+        public WorkerRole GetRole() => Role;
         public string GetName() => Name;
 
         public decimal GetSalary(IEnumerable<TimeRecord> timeRecords)

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RSaitov.SoftwareDevelop.Domain
+namespace RSaitov.SoftwareDevelop.Data
 {
     public class TimeRecord
     {

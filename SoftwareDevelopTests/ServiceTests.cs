@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using RSaitov.SoftwareDevelop.Domain;
-using RSaitov.SoftwareDevelop.Persistence;
+using RSaitov.SoftwareDevelop.Data;
 
 namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
 {
@@ -17,12 +17,12 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
             service = new Service();
         }
 
-        private IWorker GetFirstWorker(UserRole userRole) => service.SelectWorkers().FirstOrDefault(x => x.GetRole() == userRole);
+        private IWorker GetFirstWorker(WorkerRole workerRole) => service.SelectWorkers().FirstOrDefault(x => x.GetRole() == workerRole);
         private IWorker GetRandomWorkerNotExisted()
         {
             while (true)
             {
-                var worker = WorkerGenerator.CreateRandomWorker();
+                var worker = WorkerGenerator.CreateRandomIWorker();
                 var userInDb = service.SelectWorker(worker.GetName());
                 if (ReferenceEquals(null, userInDb))
                     return worker;
@@ -33,7 +33,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
         public void CreateNotExistedWorker_Success()
         {
             IWorker worker = GetRandomWorkerNotExisted();
-            var result = service.CreateWorker(GetFirstWorker(UserRole.Manager), worker);
+            var result = service.CreateWorker(GetFirstWorker(WorkerRole.Manager), worker);
             Assert.IsTrue(result);
         }
 
@@ -44,7 +44,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
             if (workers.Count() == 0)
                 Assert.Pass("No workers in DB");
 
-            var result = service.CreateWorker(GetFirstWorker(UserRole.Manager), workers.First());
+            var result = service.CreateWorker(GetFirstWorker(WorkerRole.Manager), workers.First());
             Assert.IsFalse(result);
         }
 
@@ -52,13 +52,13 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
         public void CreateWorkerSenderNoAccess_Fail()
         {
             IWorker worker = GetRandomWorkerNotExisted();
-            var result = service.CreateWorker(GetFirstWorker(UserRole.Employee), worker);
+            var result = service.CreateWorker(GetFirstWorker(WorkerRole.Employee), worker);
             Assert.IsFalse(result);
         }
         [Test]
         public void CreateOwnTimeRecord_Success()
         {
-            var roles = new[] { UserRole.Manager, UserRole.Employee, UserRole.Freelancer };
+            var roles = new[] { WorkerRole.Manager, WorkerRole.Employee, WorkerRole.Freelancer };
 
             foreach (var role in roles)
             {
@@ -78,7 +78,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
         [Test]
         public void CreateTimeRecordToOtherRole()
         {
-            var roles = new[] { UserRole.Manager, UserRole.Employee, UserRole.Freelancer };
+            var roles = new[] { WorkerRole.Manager, WorkerRole.Employee, WorkerRole.Freelancer };
             var results = new bool[] {
                 true, true,
                 false, false,
@@ -107,7 +107,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
         [Test]
         public void CreateTimeRecordOldDate()
         {
-            var roles = new[] { UserRole.Manager, UserRole.Employee, UserRole.Freelancer };
+            var roles = new[] { WorkerRole.Manager, WorkerRole.Employee, WorkerRole.Freelancer };
             var results = new bool[] { true, true, false };
 
             var counter = 0;
@@ -130,8 +130,8 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
         [Test]
         public void GetReportSingleWorker_Success()
         {
-            IWorker sender = GetFirstWorker(UserRole.Manager);
-            IWorker worker = GetFirstWorker(UserRole.Manager);
+            IWorker sender = GetFirstWorker(WorkerRole.Manager);
+            IWorker worker = GetFirstWorker(WorkerRole.Manager);
 
             var report = service.GetReportSingleWorker(sender, worker, DateTime.Now.AddDays(-14).Date, DateTime.Now.Date);
             Assert.NotNull(report);
@@ -140,8 +140,8 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
         [Test]
         public void GetReportSingleWorkerSenderNoAccess_Fail()
         {
-            IWorker sender = GetFirstWorker(UserRole.Employee);
-            IWorker worker = GetFirstWorker(UserRole.Manager);
+            IWorker sender = GetFirstWorker(WorkerRole.Employee);
+            IWorker worker = GetFirstWorker(WorkerRole.Manager);
 
             var report = service.GetReportSingleWorker(sender, worker, DateTime.Now.AddDays(-14).Date, DateTime.Now.Date);
             Assert.Null(report);
@@ -150,7 +150,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
         [Test]
         public void GetReportAllWorkers_Success()
         {
-            IWorker sender = GetFirstWorker(UserRole.Manager);
+            IWorker sender = GetFirstWorker(WorkerRole.Manager);
 
             var report = service.GetReportAllWorkers(sender, DateTime.Now.AddDays(-14).Date, DateTime.Now.Date);
             Assert.NotNull(report);

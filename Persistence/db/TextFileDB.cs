@@ -1,21 +1,10 @@
-﻿using RSaitov.SoftwareDevelop.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace RSaitov.SoftwareDevelop.Persistence
+namespace RSaitov.SoftwareDevelop.Data
 {
-    public interface IRepository
-    {
-        IWorker SelectWorker(string name);
-        IEnumerable<IWorker> SelectWorkers();
-        bool InsertWorker(IWorker person);
-
-        IEnumerable<TimeRecord> SelectTimeRecords(UserRole userRole);
-        bool InsertTimeRecord(TimeRecord timeRecord, UserRole userRole);
-    }
-
     public class TextFileDB : IRepository
     {
         private static string _personsFile = @"C:\tmp\SoftwareDevelopFiles\person.csv";
@@ -39,57 +28,56 @@ namespace RSaitov.SoftwareDevelop.Persistence
             if (!File.Exists(fileNameWithPath))
                 File.Create(fileNameWithPath).Close();
         }
-        private string ChooseWorkerFileByUserRole(UserRole userRole)
+        private string ChooseWorkerFileByWorkerRole(WorkerRole workerRole)
         {
             string fileName = "";
-            switch (userRole)
+            switch (workerRole)
             {
-                case UserRole.Manager:
+                case WorkerRole.Manager:
                     fileName = _managerHoursFile;
                     break;
-                case UserRole.Employee:
+                case WorkerRole.Employee:
                     fileName = _employeeHoursFile;
                     break;
-                case UserRole.Freelancer:
+                case WorkerRole.Freelancer:
                     fileName = _freelanceHoursFile;
                     break;
             }
             return fileName;
         }
 
-        public IEnumerable<IWorker> SelectWorkers()
+        public IEnumerable<WorkerDTO> SelectWorkers()
         {
-            var list = new HashSet<IWorker>();
+            var list = new HashSet<WorkerDTO>();
             using (var file = File.OpenText(_personsFile))
             {
                 string s = "";
                 while ((s = file.ReadLine()) != null)
                 {
-                    var stringMas = s.Split(',');
-                    var worker = WorkerFactory.GenerateWorker(stringMas[0], (UserRole)Int32.Parse(stringMas[1]));
-                    list.Add(worker);
+                    var stringMas = s.Split(',');                    
+                    list.Add(new WorkerDTO(stringMas[0], (WorkerRole)Int32.Parse(stringMas[1])));
                 }
             }
             return list;
         }
-        public bool InsertWorker(IWorker worker)
+        public bool InsertWorker(WorkerDTO worker)
         {
-            var row = string.Join(",", worker.GetName(), (int)worker.GetRole());
+            var row = string.Join(",", worker.Name, (int)worker.Role);
             using (var sw = File.AppendText(_personsFile))
                 sw.WriteLine(row);
             return true;
         }
 
-        public IWorker SelectWorker(string name)
+        public WorkerDTO SelectWorker(string name)
         {
             var persons = SelectWorkers();
-            return persons.FirstOrDefault(p => string.Equals(p.GetName(), name, StringComparison.OrdinalIgnoreCase));
+            return persons.FirstOrDefault(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase));
         }
 
-        public IEnumerable<TimeRecord> SelectTimeRecords(UserRole userRole)
+        public IEnumerable<TimeRecord> SelectTimeRecords(WorkerRole workerRole)
         {
             var list = new List<TimeRecord>();
-            string fileName = ChooseWorkerFileByUserRole(userRole);
+            string fileName = ChooseWorkerFileByWorkerRole(workerRole);
             using (var file = File.OpenText(fileName))
             {
                 string s = "";
@@ -108,7 +96,7 @@ namespace RSaitov.SoftwareDevelop.Persistence
             return list;
         }
 
-        public bool InsertTimeRecord(TimeRecord timeRecord, UserRole userRole)
+        public bool InsertTimeRecord(TimeRecord timeRecord, WorkerRole workerRole)
         {
             var row = string.Join(",",
                 timeRecord.Date.ToShortDateString(),
@@ -116,7 +104,7 @@ namespace RSaitov.SoftwareDevelop.Persistence
                 timeRecord.Hours,
                 timeRecord.Description
             );
-            var fileName = ChooseWorkerFileByUserRole(userRole);
+            var fileName = ChooseWorkerFileByWorkerRole(workerRole);
             using (var sw = File.AppendText(fileName))
                 sw.WriteLine(row);
             return true;

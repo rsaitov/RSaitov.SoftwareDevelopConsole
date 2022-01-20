@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using RSaitov.SoftwareDevelop.Data;
+using System.Collections.Generic;
 
 namespace RSaitov.SoftwareDevelop.Domain
 {

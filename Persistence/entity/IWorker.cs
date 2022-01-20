@@ -1,9 +1,6 @@
-﻿using RSaitov.SoftwareDevelop.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace RSaitov.SoftwareDevelop.Domain
+namespace RSaitov.SoftwareDevelop.Data
 {
     /// <summary>
     /// Интерфейс, описывающий работающего сотрудника
@@ -11,7 +8,7 @@ namespace RSaitov.SoftwareDevelop.Domain
     public interface IWorker
     {
         string GetName();
-        UserRole GetRole();
+        WorkerRole GetRole();
         decimal GetSalary(IEnumerable<TimeRecord> timeRecords);
     }
 }
