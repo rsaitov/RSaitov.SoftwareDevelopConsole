@@ -8,10 +8,11 @@ https://docs.google.com/document/d/1kZz1ozAwNTVkIxWoyPYI_zTw6mos3CI03MyXnCxNbeM/
 
 **Проект Data**
 - слой работы с БД IRepository (реализация TextFileDB)
-- слой бизнес-логики IService
+- объекты хранения данных (Person, Worker, TimeRecord)
 
 **Проект Domain**
 - объекты с поведением (сотрудники, таблицы учета рабочего времени, отчеты)
+- слой бизнес-логики IService
 
 Объекты реализующие IWorker - виды сотрудников по ролям:
 - менеджер (Manager)
