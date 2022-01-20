@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using RSaitov.SoftwareDevelop.Domain;
+﻿using NUnit.Framework;
 using RSaitov.SoftwareDevelop.Data;
+using RSaitov.SoftwareDevelop.Domain;
+using System;
+using System.Linq;
 
 namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
 {
@@ -14,7 +12,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
         [SetUp]
         public void Setup()
         {
-            service = new Service();
+            service = new Service(new TextFileDB());
         }
 
         private IWorker GetFirstWorker(WorkerRole workerRole) => service.SelectWorkers().FirstOrDefault(x => x.GetRole() == workerRole);

@@ -21,7 +21,7 @@ namespace RSaitov.SoftwareDevelop.Domain
 {
     public class Service : IService
     {
-        private IRepository _repository = new TextFileDB();
+        private readonly IRepository _repository;
         private HashSet<WorkerRole> workerRolesAllowedToCreateWorkers =
             new HashSet<WorkerRole> { WorkerRole.Manager };
         private HashSet<WorkerRole> workerRolesAllowedToCreateTimeRecordsForAllWorkers =
@@ -31,8 +31,9 @@ namespace RSaitov.SoftwareDevelop.Domain
         private HashSet<WorkerRole> workerRolesAllowedToViewReportAllWorkers =
             new HashSet<WorkerRole> { WorkerRole.Manager };
 
-        public Service()
+        public Service(IRepository repository)
         {
+            _repository = repository;
         }
 
         public bool CreateWorker(IWorker sender, IWorker worker)
