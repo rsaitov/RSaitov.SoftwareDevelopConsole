@@ -8,7 +8,7 @@ https://docs.google.com/document/d/1kZz1ozAwNTVkIxWoyPYI_zTw6mos3CI03MyXnCxNbeM/
 
 **Проект Data**
 - слой работы с БД IRepository (реализация TextFileDB)
-- слой бизнес-логики
+- слой бизнес-логики IService
 
 **Проект Domain**
 - объекты с поведением (сотрудники, таблицы учета рабочего времени, отчеты)
