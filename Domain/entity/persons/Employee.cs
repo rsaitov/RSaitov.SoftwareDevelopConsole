@@ -3,9 +3,10 @@ using System.Linq;
 
 namespace RSaitov.SoftwareDevelop.Domain
 {
-    public class Employee : Staff, IWorker
+    public class Employee : Person, IWorker
     {
-        public Employee(string name) : base(name, 120000)
+        public decimal MonthSalary => 120000;
+        public Employee(string name) : base(name)
         {
 
         }

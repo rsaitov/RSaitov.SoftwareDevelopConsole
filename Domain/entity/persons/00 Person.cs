@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace RSaitov.SoftwareDevelop.Domain
+﻿namespace RSaitov.SoftwareDevelop.Domain
 {
     public class Person
     {
