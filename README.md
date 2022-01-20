@@ -24,3 +24,7 @@ https://docs.google.com/document/d/1kZz1ozAwNTVkIxWoyPYI_zTw6mos3CI03MyXnCxNbeM/
 - IoC-контейнер для глобального управления зависимостями (https://github.com/thangchung/awesome-dotnet-core#ioc);
 - custom-responce object для упаковки результата выполнения команды, текста ошибки, возвращаемого объекта;
 - устранить избыточную вычитку из БД. Производить фильтрацию на уровне запросов к БД, а не на уровне IService. Пример: GetTimeRecords(IWorker worker) выбирает из БД все рабочие часы сотрудников с той же ролью. Можно добавить аналогичный метод в IRepository.
+
+## Что можно добавить ##
+
+- логирование для хранения истории выполнения команд. Эдакая аналитика каким функционалом чаще пользуются (https://github.com/thangchung/awesome-dotnet-core#logging)
