@@ -23,7 +23,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             {
                 var authResult = auth.Execute();
                 if (ReferenceEquals(null, authResult))
-                    Console.WriteLine("Worker not found");
+                    Console.WriteLine("Сотрудник не найден");
                 else
                 {
                     isUnauth = false;

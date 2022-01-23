@@ -12,13 +12,11 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
         IService service = new Service(new MockRepository());
         public IWorker Execute()
         {
-            Console.Write("Enter your name: ");
+            Console.Write("Введите имя: ");
             var user = Console.ReadLine();
             var worker = service.SelectWorker(user);
 
             return worker;
         }
-
-        public string Title() => "Введите имя: ";
     }
 }
