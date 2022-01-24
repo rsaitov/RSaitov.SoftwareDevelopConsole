@@ -4,18 +4,24 @@ using System;
 
 namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
 {
+
     public interface ICommand
     {
-        object Execute(IWorker sender);
-        string Title();
+        event SendMessage Notify;
+        event ReadString ReadString;
         bool Access(IWorker sender);
+        void Execute(IWorker sender);
+        string Title();
     }
 
     internal class AddWorker : ICommand
     {
-        public object Execute(IWorker sender)
+        public event SendMessage Notify;
+        public event ReadString ReadString;
+
+        public void Execute(IWorker sender)
         {
-            return "Adding worker";
+            Notify("Adding worker");
         }
         public bool Access(IWorker sender)
         {
@@ -27,20 +33,20 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
 
     internal class ReportAllWorkers : ICommand
     {
-        public object Execute(IWorker sender)
+        public event SendMessage Notify;
+        public event ReadString ReadString;
+        public void Execute(IWorker sender)
         {
             IRepository repository = new MockRepository();
             IService service = new Service(repository);
             var report = service.GetReportAllWorkers(sender, DateTime.Now.Date.AddDays(-7), DateTime.Now.Date);
 
-            Console.WriteLine($"Отчет за период с {report.Start.ToShortDateString()} по {report.End.ToShortDateString()}");
+            Notify($"Отчет за период с {report.Start.ToShortDateString()} по {report.End.ToShortDateString()}");
             foreach(var workerReport in report.SingleWorkerReports)
-                Console.WriteLine($"{workerReport.Worker.GetName()} отработал {workerReport.Hours} " +
+                Notify($"{workerReport.Worker.GetName()} отработал {workerReport.Hours} " +
                     $"часов и заработал за период {workerReport.Salary} рублей");
-
-            Console.WriteLine($"Всего часов отработано за период {report.HoursTotal}, " +
+            Notify($"Всего часов отработано за период {report.HoursTotal}, " +
                 $"сумма к выплате {report.SalaryTotal}");
-            return "";
         }
         public bool Access(IWorker sender)
         {
@@ -56,6 +62,8 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
      */
     internal class ReportWorker : ICommand
     {
+        public event SendMessage Notify;
+        public event ReadString ReadString;
         IRepository _repository;
         IService _service;
         private IWorker _sender;
@@ -65,42 +73,38 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             _service = new Service(_repository);
             _sender = sender;
         }
-        public object Execute(IWorker sender)
+        public void Execute(IWorker sender)
         {
             var worker = sender;
             if (_sender.GetRole() == WorkerRole.Manager)
             {
-                Console.Write("Введите имя сотрудника: ");
-                var workerName = Console.ReadLine();
-                
+                var workerName = ReadString("Введите имя сотрудника: ");
+
                 var workerFromEnteredName = _service.SelectWorker(workerName);
                 if (ReferenceEquals(null, workerFromEnteredName))
-                    return $"Невозможно найти сотрудника {workerName}";
+                    Notify($"Невозможно найти сотрудника {workerName}");
                 worker = workerFromEnteredName;
             }
 
-            Console.Write("Введите дату начала в формате dd.MM.yyyy: ");
-            var dateStartString = Console.ReadLine();
+            var dateStartString = ReadString("Введите дату начала в формате dd.MM.yyyy: ");
             DateTime dateStart;
             var resultDateStart = DateTime.TryParse(dateStartString, out dateStart);
             if (!resultDateStart)
-                return "Ошибка даты";
+                Notify("Ошибка даты");
 
-            Console.Write("Введите дату окончания в формате dd.MM.yyyy: ");
-            var dateEndString = Console.ReadLine();
+            var dateEndString = ReadString("Введите дату начала в формате dd.MM.yyyy: ");
             DateTime dateEnd;
             var resultDateEnd = DateTime.TryParse(dateEndString, out dateEnd);
             if (!resultDateEnd)
-                return "Ошибка даты";
+                Notify("Ошибка даты");
 
             var report = _service.GetReportSingleWorker(sender, worker, dateStart, dateEnd);
-            Console.WriteLine($"Отчет по сотруднику: {report.Worker.GetName()} за период " +
+            Notify($"Отчет по сотруднику: {report.Worker.GetName()} за период " +
                 $"{report.Start.ToShortDateString()} по {report.End.ToShortDateString()}");
             foreach (var timeRecord in report.TimeRecords)
-                Console.WriteLine($"{timeRecord.Date.ToShortDateString()}: {timeRecord.Hours} часов, {timeRecord.Description}");
-            Console.WriteLine($"Итого: {report.Hours} часов, заработано: {report.Salary} руб");
+                Notify($"{timeRecord.Date.ToShortDateString()}: {timeRecord.Hours} часов, {timeRecord.Description}");
+            Notify($"Итого: {report.Hours} часов, заработано: {report.Salary} руб");
 
-            return "";
         }
         public bool Access(IWorker sender) => true;
 
@@ -111,9 +115,11 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
 
     internal class AddTimeRecord : ICommand
     {
-        public object Execute(IWorker sender)
+        public event SendMessage Notify;
+        public event ReadString ReadString;
+        public void Execute(IWorker sender)
         {
-            return "Adding time record";
+            Notify("Adding time record");
         }
         public bool Access(IWorker sender) => true;
 
@@ -122,10 +128,11 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
 
     internal class Exit : ICommand
     {
-        public object Execute(IWorker sender)
+        public event SendMessage Notify;
+        public event ReadString ReadString;
+        public void Execute(IWorker sender)
         {
             Environment.Exit(0);
-            return null;
         }
         public bool Access(IWorker sender) => true;
 

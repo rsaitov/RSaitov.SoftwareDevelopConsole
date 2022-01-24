@@ -36,6 +36,8 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             }
 
             var mainMenuCommand = new MainMenu(user);
+            mainMenuCommand.Notify += ShowConsoleMessage;
+            mainMenuCommand.ReadString += ReadLineString;
             var exit = false;
             while (!exit)
             {
@@ -45,13 +47,22 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
                 var command = mainMenuCommand.GetCommand(commandNumber);
                 if (ReferenceEquals(null, command))
                 {
-
                     Console.WriteLine("Невозможно распознать выбранную команду.");
                     continue;
                 }
-                var result = command.Execute(user);
-                Console.WriteLine(result);
+                Console.WriteLine();
+                command.Execute(user);
             }
+        }
+
+        static void ShowConsoleMessage(string message)
+        {
+            Console.WriteLine(message);
+        }
+        static string ReadLineString(string message)
+        {
+            Console.Write(message);
+            return Console.ReadLine();
         }
     }
 }
