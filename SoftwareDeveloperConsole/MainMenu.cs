@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
 {
@@ -11,13 +10,19 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
         private List<ICommand> _commands { get; }
         public MainMenu(IWorker worker)
         {
+            var addWorkerCommand = new AddWorker();
+            var reportAllWorkersCommand = new ReportAllWorkers();
+
             _commands = new List<ICommand> {
-                new AddWorker(),
-                new ReportAllWorkers(),
-                new ReportWorker(),
+                new ReportWorker(worker),
                 new AddTimeRecord(),
                 new Exit(),
             };
+
+            if (addWorkerCommand.Access(worker))
+                _commands.Insert(0, addWorkerCommand);
+            if (reportAllWorkersCommand.Access(worker))
+                _commands.Insert(1, reportAllWorkersCommand);
         }
         public ICommand GetCommand(string command)
         {

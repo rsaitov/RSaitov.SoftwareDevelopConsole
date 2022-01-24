@@ -5,7 +5,7 @@ using System;
  * Консольное приложение сотрудника
  * 
  * Что можно улучшить:
- * меню крутится к бесконечном цикле, команда "выход" завершает приложение
+ * меню крутится в бесконечном цикле, команда "выход" завершает приложение
  * лучше чтобы цикл корректно завершался, получив команду "выход" от объекта MainMenu
  */
 
@@ -28,6 +28,10 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
                 {
                     isUnauth = false;
                     user = authResult;
+
+                    Console.WriteLine();
+                    Console.WriteLine("Добро пожаловать!");
+                    Console.WriteLine($"Ваша роль в системе: {user.GetRole()}.");
                 }
             }
 
@@ -45,7 +49,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
                     Console.WriteLine("Невозможно распознать выбранную команду.");
                     continue;
                 }
-                var result = command.Execute();
+                var result = command.Execute(user);
                 Console.WriteLine(result);
             }
         }

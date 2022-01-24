@@ -102,7 +102,7 @@ namespace RSaitov.SoftwareDevelop.Domain
 
             var salary = worker.GetSalary(workerTimeRecords);
             var hours = workerTimeRecords.Sum(x => x.Hours);
-            return new ReportSingleWorker(workerTimeRecords, salary, hours);
+            return new ReportSingleWorker(worker, workerTimeRecords, salary, hours, start, end);
         }
 
         public ReportAllWorkers GetReportAllWorkers(IWorker sender, DateTime start, DateTime end)
@@ -110,10 +110,14 @@ namespace RSaitov.SoftwareDevelop.Domain
             var workers = SelectWorkers();
             var workerReports = new List<ReportSingleWorker>();
             foreach (var worker in workers)
-                workerReports.Add(GetReportSingleWorker(sender, worker, start, end));
+            {
+                var workerReport = GetReportSingleWorker(sender, worker, start, end);
+                if (!ReferenceEquals(null, workerReport))
+                    workerReports.Add(workerReport);
+            }
             var hoursTotal = workerReports.Sum(x => x.Hours);
             var salaryTotal = workerReports.Sum(x => x.Salary);
-            return new ReportAllWorkers(workerReports, hoursTotal, salaryTotal);
+            return new ReportAllWorkers(workerReports, hoursTotal, salaryTotal, start, end);
         }
 
         public IEnumerable<TimeRecord> GetTimeRecords(IWorker worker)
