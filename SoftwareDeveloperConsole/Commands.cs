@@ -34,7 +34,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
     {
         public object Execute()
         {
-            return "Showing report worker";
+            //return "Showing report worker";
         }
 
         public string Title() => "Просмотреть отчет по конкретному сотруднику";
