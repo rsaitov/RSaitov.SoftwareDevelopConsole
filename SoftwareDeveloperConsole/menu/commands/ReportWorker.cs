@@ -4,58 +4,6 @@ using System;
 
 namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
 {
-
-    public interface ICommand
-    {
-        event SendMessage Notify;
-        event ReadString ReadString;
-        bool Access(IWorker sender);
-        void Execute(IWorker sender);
-        string Title();
-    }
-
-    internal class AddWorker : ICommand
-    {
-        public event SendMessage Notify;
-        public event ReadString ReadString;
-
-        public void Execute(IWorker sender)
-        {
-            Notify("Adding worker");
-        }
-        public bool Access(IWorker sender)
-        {
-            return sender.GetRole() == WorkerRole.Manager;
-        }
-
-        public string Title() => "Добавить сотрудника";
-    }
-
-    internal class ReportAllWorkers : ICommand
-    {
-        public event SendMessage Notify;
-        public event ReadString ReadString;
-        public void Execute(IWorker sender)
-        {
-            IRepository repository = new MockRepository();
-            IService service = new Service(repository);
-            var report = service.GetReportAllWorkers(sender, DateTime.Now.Date.AddDays(-7), DateTime.Now.Date);
-
-            Notify($"Отчет за период с {report.Start.ToShortDateString()} по {report.End.ToShortDateString()}");
-            foreach(var workerReport in report.SingleWorkerReports)
-                Notify($"{workerReport.Worker.GetName()} отработал {workerReport.Hours} " +
-                    $"часов и заработал за период {workerReport.Salary} рублей");
-            Notify($"Всего часов отработано за период {report.HoursTotal}, " +
-                $"сумма к выплате {report.SalaryTotal}");
-        }
-        public bool Access(IWorker sender)
-        {
-            return sender.GetRole() == WorkerRole.Manager;
-        }
-
-        public string Title() => "Просмотреть отчет по всем сотрудникам";
-    }
-
     /*
      * Отчет по любому сотруднику доступен только менеджеру
      * Остальным типам сотрудников доступны только собственные отчеты
@@ -111,31 +59,5 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
         public string Title() => _sender.GetRole() == WorkerRole.Manager ? 
             "Просмотреть отчет по конкретному сотруднику" :
             "Просмотреть собственный отчет";
-    }
-
-    internal class AddTimeRecord : ICommand
-    {
-        public event SendMessage Notify;
-        public event ReadString ReadString;
-        public void Execute(IWorker sender)
-        {
-            Notify("Adding time record");
-        }
-        public bool Access(IWorker sender) => true;
-
-        public string Title() => "Добавить часы работы";
-    }
-
-    internal class Exit : ICommand
-    {
-        public event SendMessage Notify;
-        public event ReadString ReadString;
-        public void Execute(IWorker sender)
-        {
-            Environment.Exit(0);
-        }
-        public bool Access(IWorker sender) => true;
-
-        public string Title() => "Выход из программы";
     }
 }
