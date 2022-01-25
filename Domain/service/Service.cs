@@ -54,6 +54,9 @@ namespace RSaitov.SoftwareDevelop.Domain
             if (ReferenceEquals(null, timeRecordWorker))
                 return false;
 
+            if (timeRecord.Hours > 24)
+                return false;
+
             var senderPersonMatchTimeRecord = string.Equals(sender.GetName(), timeRecord.Name);
             var timeRecordDayDiff = (DateTime.Now - timeRecord.Date).TotalDays;
 
