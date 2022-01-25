@@ -23,7 +23,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             var addWorkerCommand = new AddWorker(_service);
             var reportAllWorkersCommand = new ReportAllWorkers(_service);
             var reportWorkerCommand = new ReportWorker(worker, _service);
-            var addTimeRecordCommand = new AddTimeRecord();
+            var addTimeRecordCommand = new AddTimeRecord(_service);
             var exitCommand = new ExitCommand();
 
             addWorkerCommand.Notify += SendToNotify;
@@ -38,16 +38,18 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             addTimeRecordCommand.ReadString += SendReadString;
             exitCommand.ReadString += SendReadString;
 
-            _commands = new List<ICommand> {
-                reportWorkerCommand,
-                addTimeRecordCommand,
-                exitCommand,
-            };
+            _commands = new List<ICommand>();
 
             if (addWorkerCommand.Access(worker))
-                _commands.Insert(0, addWorkerCommand);
+                _commands.Add(addWorkerCommand);
+            if (addTimeRecordCommand.Access(worker))
+                _commands.Add(addTimeRecordCommand);
             if (reportAllWorkersCommand.Access(worker))
-                _commands.Insert(1, reportAllWorkersCommand);
+                _commands.Add(reportAllWorkersCommand);
+            if (reportWorkerCommand.Access(worker))
+                _commands.Add(reportWorkerCommand);
+            if (exitCommand.Access(worker))
+                _commands.Add(exitCommand);
         }
         private void SendToNotify(string message)
         {

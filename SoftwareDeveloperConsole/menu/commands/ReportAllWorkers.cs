@@ -15,7 +15,17 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
         }
         public void Execute(IWorker sender)
         {
-            var report = _service.GetReportAllWorkers(sender, DateTime.Now.Date.AddDays(-7), DateTime.Now.Date);
+            var dateStartString = ReadString("Введите дату начала в формате dd.MM.yyyy: ");
+            var dateStart = ConsoleReadlineValueParse.ParseDate(dateStartString, Notify);
+            if (dateStart == DateTime.MinValue)
+                return;
+
+            var dateEndString = ReadString("Введите дату окончания в формате dd.MM.yyyy: ");
+            var dateEnd = ConsoleReadlineValueParse.ParseDate(dateEndString, Notify);
+            if (dateEnd == DateTime.MinValue)
+                return;
+
+            var report = _service.GetReportAllWorkers(sender, dateStart, dateEnd);
             Notify($"Отчет за период с {report.Start.ToShortDateString()} по {report.End.ToShortDateString()}");
             foreach(var workerReport in report.SingleWorkerReports)
                 Notify($"{workerReport.Worker.GetName()} отработал {workerReport.Hours} " +

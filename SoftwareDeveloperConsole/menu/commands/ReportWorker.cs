@@ -34,16 +34,14 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             }
 
             var dateStartString = ReadString("Введите дату начала в формате dd.MM.yyyy: ");
-            DateTime dateStart;
-            var resultDateStart = DateTime.TryParse(dateStartString, out dateStart);
-            if (!resultDateStart)
-                Notify("Ошибка даты");
+            var dateStart = ConsoleReadlineValueParse.ParseDate(dateStartString, Notify);
+            if (dateStart == DateTime.MinValue)
+                return;
 
-            var dateEndString = ReadString("Введите дату начала в формате dd.MM.yyyy: ");
-            DateTime dateEnd;
-            var resultDateEnd = DateTime.TryParse(dateEndString, out dateEnd);
-            if (!resultDateEnd)
-                Notify("Ошибка даты");
+            var dateEndString = ReadString("Введите дату окончания в формате dd.MM.yyyy: ");
+            var dateEnd = ConsoleReadlineValueParse.ParseDate(dateEndString, Notify);
+            if (dateEnd == DateTime.MinValue)
+                return;
 
             var report = _service.GetReportSingleWorker(sender, worker, dateStart, dateEnd);
             Notify($"Отчет по сотруднику: {report.Worker.GetName()} за период " +

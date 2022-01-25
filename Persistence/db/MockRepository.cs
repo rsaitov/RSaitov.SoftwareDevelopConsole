@@ -12,7 +12,7 @@ namespace RSaitov.SoftwareDevelop.Data
         public MockRepository()
         {
             _workers = new List<WorkerDTO>() { 
-                new WorkerDTO("Schumacher", WorkerRole.Manager),
+                new WorkerDTO("Alonso", WorkerRole.Manager),
                 new WorkerDTO("Prost", WorkerRole.Employee),
                 new WorkerDTO("Senna", WorkerRole.Freelancer),
             };
@@ -23,10 +23,10 @@ namespace RSaitov.SoftwareDevelop.Data
                 //1250 * 8 = 10000
                 //total 37250
 
-                new TimeRecord(DateTime.Now.AddDays(-1), "Schumacher", 6, "lorem ipsum"),
-                new TimeRecord(DateTime.Now.AddDays(-2), "Schumacher", 14, "lorem ipsum"),
-                new TimeRecord(DateTime.Now.AddDays(-3), "Schumacher", 7, "lorem ipsum"),
-                new TimeRecord(DateTime.Now.AddDays(-4), "Schumacher", 8, "lorem ipsum"),
+                new TimeRecord(DateTime.Now.AddDays(-1), "Alonso", 6, "lorem ipsum"),
+                new TimeRecord(DateTime.Now.AddDays(-2), "Alonso", 14, "lorem ipsum"),
+                new TimeRecord(DateTime.Now.AddDays(-3), "Alonso", 7, "lorem ipsum"),
+                new TimeRecord(DateTime.Now.AddDays(-4), "Alonso", 8, "lorem ipsum"),
 
                 //750 * 8 = 6000
                 //750 * 8 + 4 * 1500 = 12000
