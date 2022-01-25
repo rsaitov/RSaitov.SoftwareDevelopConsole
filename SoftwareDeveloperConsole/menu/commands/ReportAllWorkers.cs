@@ -8,12 +8,14 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
     {
         public event SendMessage Notify;
         public event ReadString ReadString;
+        private readonly IService _service;
+        public ReportAllWorkers(IService service)
+        {
+            _service = service;
+        }
         public void Execute(IWorker sender)
         {
-            IRepository repository = new MockRepository();
-            IService service = new Service(repository);
-            var report = service.GetReportAllWorkers(sender, DateTime.Now.Date.AddDays(-7), DateTime.Now.Date);
-
+            var report = _service.GetReportAllWorkers(sender, DateTime.Now.Date.AddDays(-7), DateTime.Now.Date);
             Notify($"Отчет за период с {report.Start.ToShortDateString()} по {report.End.ToShortDateString()}");
             foreach(var workerReport in report.SingleWorkerReports)
                 Notify($"{workerReport.Worker.GetName()} отработал {workerReport.Hours} " +

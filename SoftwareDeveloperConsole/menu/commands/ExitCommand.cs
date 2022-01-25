@@ -3,7 +3,7 @@ using System;
 
 namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
 {
-    internal class Exit : ICommand
+    internal class ExitCommand : ICommand
     {
         public event SendMessage Notify;
         public event ReadString ReadString;

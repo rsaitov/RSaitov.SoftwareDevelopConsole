@@ -12,14 +12,13 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
     {
         public event SendMessage Notify;
         public event ReadString ReadString;
-        IRepository _repository;
-        IService _service;
+
+        private readonly IService _service;
         private IWorker _sender;
-        public ReportWorker(IWorker sender)
+        public ReportWorker(IWorker sender, IService service)
         {
-            _repository = new MockRepository();
-            _service = new Service(_repository);
             _sender = sender;
+            _service = service;
         }
         public void Execute(IWorker sender)
         {

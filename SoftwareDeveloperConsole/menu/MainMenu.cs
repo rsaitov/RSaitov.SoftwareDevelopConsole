@@ -1,4 +1,5 @@
 ﻿using RSaitov.SoftwareDevelop.Data;
+using RSaitov.SoftwareDevelop.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,13 +14,17 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
         public event SendMessage Notify;
         public event ReadString ReadString;
         private List<ICommand> _commands { get; }
+        private IRepository _repository = new MockRepository();
+        private IService _service;
         public MainMenu(IWorker worker)
         {
-            var addWorkerCommand = new AddWorker();
-            var reportAllWorkersCommand = new ReportAllWorkers();
-            var reportWorkerCommand = new ReportWorker(worker);
+            _service = new Service(_repository);
+
+            var addWorkerCommand = new AddWorker(_service);
+            var reportAllWorkersCommand = new ReportAllWorkers(_service);
+            var reportWorkerCommand = new ReportWorker(worker, _service);
             var addTimeRecordCommand = new AddTimeRecord();
-            var exitCommand = new ReportAllWorkers();
+            var exitCommand = new ExitCommand();
 
             addWorkerCommand.Notify += SendToNotify;
             reportAllWorkersCommand.Notify += SendToNotify;
