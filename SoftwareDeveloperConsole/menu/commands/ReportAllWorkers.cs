@@ -16,12 +16,12 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
         public void Execute(IWorker sender)
         {
             var dateStartString = ReadString("Введите дату начала в формате dd.MM.yyyy: ");
-            var dateStart = ConsoleReadlineValueParse.ParseDate(dateStartString, Notify);
+            var dateStart = UserEnteredValueParser.ParseDate(dateStartString, Notify);
             if (dateStart == DateTime.MinValue)
                 return;
 
             var dateEndString = ReadString("Введите дату окончания в формате dd.MM.yyyy: ");
-            var dateEnd = ConsoleReadlineValueParse.ParseDate(dateEndString, Notify);
+            var dateEnd = UserEnteredValueParser.ParseDate(dateEndString, Notify);
             if (dateEnd == DateTime.MinValue)
                 return;
 

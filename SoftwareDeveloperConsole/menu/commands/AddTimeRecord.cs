@@ -24,18 +24,14 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             }
 
             var dateString = ReadString("Введите дату в формате dd.MM.yyyy: ");
-            var date = ConsoleReadlineValueParse.ParseDate(dateString, Notify);
+            var date = UserEnteredValueParser.ParseDate(dateString, Notify);
             if (date == DateTime.MinValue)
                 return;
 
             var hoursString = ReadString("Введите количество часов: ");
-            int hours = 0;
-            var hoursParseResult = Int32.TryParse(hoursString, out hours);
-            if (!hoursParseResult)
-            {
-                Notify("Ошибка: количество часов не распознано");
+            int hours = UserEnteredValueParser.ParseInt(hoursString, Notify);
+            if (hours == Int32.MinValue)
                 return;
-            }
 
             var description = ReadString("Введите описание: ");
 

@@ -19,13 +19,9 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
         {
             var workerName = ReadString("Введите имя сотрудника: ");
             var workerRoleString = ReadString("Выберите роль сотрудника (1 - Manager, 2 - Employee, 3 - Freelancer): ");
-            int workerRoleNumber = 0;
-            var result = Int32.TryParse(workerRoleString, out workerRoleNumber);
-            if (!result)
-            {
-                Notify("Ошибка: роль не распознана");
+            int workerRoleNumber = UserEnteredValueParser.ParseInt(workerRoleString, Notify);
+            if (workerRoleNumber == Int32.MinValue || workerRoleNumber < 1 || workerRoleNumber > 3)
                 return;
-            }
 
             var worker = WorkerFactory.GenerateWorker(workerName, (WorkerRole)workerRoleNumber);
             var createWorkerResult = _service.CreateWorker(sender, worker);
