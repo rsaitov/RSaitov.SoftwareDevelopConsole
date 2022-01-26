@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using RSaitov.SoftwareDevelop.Data;
+using RSaitov.SoftwareDevelop.Domain;
 using RSaitov.SoftwareDevelop.SoftwareDevelopTests;
 using System;
 using System.Linq;
@@ -39,15 +40,13 @@ namespace Test_DB
             Assert.NotNull(users);
         }
 
-        //закомментирован для избежания дублирования сотрудников
-        //проверка дубликтов слоем выше
-        //[Test]
-        //public void InsertRandomPerson_Success()
-        //{
-        //    var worker = WorkerGenerator.CreateRandomWorker();
-        //    var result = repository.InsertWorker(worker);
-        //    Assert.IsTrue(result);
-        //}
+        [Test]
+        public void InsertRandomPerson_Success()
+        {
+            var worker = WorkerGenerator.CreateRandomWorker();
+            var result = repository.InsertWorker(worker);
+            Assert.IsTrue(result);
+        }
 
         [Test]
         public void SelectTimeRecords_Success()
