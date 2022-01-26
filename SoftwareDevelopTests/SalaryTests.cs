@@ -2,17 +2,19 @@
 using RSaitov.SoftwareDevelop.Data;
 using RSaitov.SoftwareDevelop.Domain;
 using RSaitov.SoftwareDevelop.SoftwareDevelopTests;
-using System.Linq;
 
 namespace Test_Salary
 {
     public class SalaryTests
     {
-        private IService service = CommonActions.Service;
+        private IRepository repository;
+        private IService service;
 
         [SetUp]
         public void Setup()
         {
+            repository = new MockRepository();
+            service = new Service(repository);
         }
         
         [Test]
