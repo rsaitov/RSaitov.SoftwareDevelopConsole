@@ -1,14 +1,15 @@
 ﻿using NUnit.Framework;
 using RSaitov.SoftwareDevelop.Data;
 using RSaitov.SoftwareDevelop.Domain;
+using RSaitov.SoftwareDevelop.SoftwareDevelopTests;
 using System.Linq;
 
-namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
+namespace Test_Salary
 {
     public class SalaryTests
     {
         private IService service;
-        private IRepository repository = new MockRepository();
+        private IRepository repository;
 
         [SetUp]
         public void Setup()
@@ -18,12 +19,11 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
             service = new Service(repository);
         }
 
-        private IWorker GetFirstWorker(WorkerRole workerRole) => service.SelectWorkers().FirstOrDefault(x => x.GetRole() == workerRole);
-
+        
         [Test]
         public void Manager_Success()
         {
-            IWorker worker = GetFirstWorker(WorkerRole.Manager);
+            IWorker worker = CommonActions.GetFirstWorker(WorkerRole.Manager);
             var timeRecords = service.GetTimeRecords(worker);
             var salary = worker.GetSalary(timeRecords);
             Assert.AreEqual(37250, salary);
@@ -32,7 +32,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
         [Test]
         public void Employee_Success()
         {
-            IWorker worker = GetFirstWorker(WorkerRole.Employee);
+            IWorker worker = CommonActions.GetFirstWorker(WorkerRole.Employee);
             var timeRecords = service.GetTimeRecords(worker);
             var salary = worker.GetSalary(timeRecords);
             Assert.AreEqual(34500, salary);
@@ -40,7 +40,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
         [Test]
         public void Freelancer_Success()
         {
-            IWorker worker = GetFirstWorker(WorkerRole.Freelancer);
+            IWorker worker = CommonActions.GetFirstWorker(WorkerRole.Freelancer);
             var timeRecords = service.GetTimeRecords(worker);
             var salary = worker.GetSalary(timeRecords);
             Assert.AreEqual(26000, salary);

@@ -1,10 +1,9 @@
 using NUnit.Framework;
-using RSaitov.SoftwareDevelop.Domain;
 using RSaitov.SoftwareDevelop.Data;
 using System;
 using System.Linq;
 
-namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
+namespace Test_DB
 {
     public class DBTests
     {
