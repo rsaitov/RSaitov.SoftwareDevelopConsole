@@ -9,15 +9,15 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
 {
     static class CommonActions
     {
-        private static IService service;
-        private static IRepository repository;
+        public static IService Service;
+        public static IRepository Repository;
         static CommonActions()
         {
             //repository = new TextFileDB();
-            repository = new MockRepository();
-            service = new Service(repository);
+            Repository = new MockRepository();
+            Service = new Service(Repository);
         }
 
-        public static IWorker GetFirstWorker(WorkerRole workerRole) => service.GetWorkers().FirstOrDefault(x => x.GetRole() == workerRole);
+        public static IWorker GetFirstWorker(WorkerRole workerRole) => Service.GetWorkers().FirstOrDefault(x => x.GetRole() == workerRole);
     }
 }

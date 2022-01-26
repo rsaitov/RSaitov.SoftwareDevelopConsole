@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using RSaitov.SoftwareDevelop.Data;
+using RSaitov.SoftwareDevelop.SoftwareDevelopTests;
 using System;
 using System.Linq;
 
@@ -7,12 +8,10 @@ namespace Test_DB
 {
     public class DBTests
     {
-        private IRepository repository;
+        private IRepository repository = CommonActions.Repository;
         [SetUp]
         public void Setup()
         {
-            //repository = new TextFileDB();
-            repository = new MockRepository();
         }
 
         [Test]

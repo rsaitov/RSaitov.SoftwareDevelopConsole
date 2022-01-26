@@ -3,29 +3,23 @@ using RSaitov.SoftwareDevelop.Data;
 using RSaitov.SoftwareDevelop.Domain;
 using RSaitov.SoftwareDevelop.SoftwareDevelopTests;
 using System;
-using System.Linq;
 
-namespace Test_Command
+namespace Test_Service
 {
     public class ReportSingleWorkerTests
     {
-        private IService service;
-        private IRepository repository;
+        private IService service = CommonActions.Service;
         [SetUp]
         public void Setup()
         {
-            //repository = new TextFileDB();
-            repository = new MockRepository();
-            service = new Service(repository);
         }
 
         [Test]
         public void GetReportSingleWorker_Success()
         {
             IWorker sender = CommonActions.GetFirstWorker(WorkerRole.Manager);
-            IWorker worker = CommonActions.GetFirstWorker(WorkerRole.Manager);
 
-            var report = service.GetReportSingleWorker(sender, worker, DateTime.Now.AddDays(-14).Date, DateTime.Now.Date);
+            var report = service.GetReportSingleWorker(sender, sender, DateTime.Now.AddDays(-14).Date, DateTime.Now.Date);
             Assert.NotNull(report);
         }
 

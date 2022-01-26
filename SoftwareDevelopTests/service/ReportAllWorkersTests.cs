@@ -3,20 +3,15 @@ using RSaitov.SoftwareDevelop.Data;
 using RSaitov.SoftwareDevelop.Domain;
 using RSaitov.SoftwareDevelop.SoftwareDevelopTests;
 using System;
-using System.Linq;
 
-namespace Test_Command
+namespace Test_Service
 {
     public class ReportAllWorkersTests
     {
-        private IService service;
-        private IRepository repository;
+        private IService service = CommonActions.Service;
         [SetUp]
         public void Setup()
         {
-            //repository = new TextFileDB();
-            repository = new MockRepository();
-            service = new Service(repository);
         }
 
         [Test]

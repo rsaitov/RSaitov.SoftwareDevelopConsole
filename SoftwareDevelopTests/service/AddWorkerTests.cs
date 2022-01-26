@@ -2,21 +2,16 @@
 using RSaitov.SoftwareDevelop.Data;
 using RSaitov.SoftwareDevelop.Domain;
 using RSaitov.SoftwareDevelop.SoftwareDevelopTests;
-using System;
 using System.Linq;
 
 namespace Test_Service
 {
-    public class ServiceTests
+    public class AddWorkerTests
     {
-        private IService service;
-        private IRepository repository;
+        private IService service = CommonActions.Service;
         [SetUp]
         public void Setup()
-        {                        
-            //repository = new TextFileDB();
-            repository = new MockRepository();
-            service = new Service(repository);
+        {
         }
 
         private IWorker GetRandomWorkerNotExisted()
@@ -31,7 +26,7 @@ namespace Test_Service
         }
 
         [Test]
-        public void CreateNotExistedWorker_Success()
+        public void AddNotExistedWorker_Success()
         {
             IWorker worker = GetRandomWorkerNotExisted();
             var result = service.AddWorker(CommonActions.GetFirstWorker(WorkerRole.Manager), worker);
@@ -39,7 +34,7 @@ namespace Test_Service
         }
 
         [Test]
-        public void CreateExistedUser_Fail()
+        public void AddExistedWorker_Fail()
         {
             var workers = service.GetWorkers();
             if (workers.Count() == 0)
@@ -50,11 +45,11 @@ namespace Test_Service
         }
 
         [Test]
-        public void CreateWorkerSenderNoAccess_Fail()
+        public void AddWorkerSenderNoAccess_Fail()
         {
             IWorker worker = GetRandomWorkerNotExisted();
             var result = service.AddWorker(CommonActions.GetFirstWorker(WorkerRole.Employee), worker);
             Assert.IsFalse(result);
-        } 
+        }
     }
 }

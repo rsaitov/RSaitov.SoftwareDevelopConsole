@@ -8,17 +8,12 @@ namespace Test_Salary
 {
     public class SalaryTests
     {
-        private IService service;
-        private IRepository repository;
+        private IService service = CommonActions.Service;
 
         [SetUp]
         public void Setup()
         {
-            //repository = new TextFileDB();
-            repository = new MockRepository();
-            service = new Service(repository);
         }
-
         
         [Test]
         public void Manager_Success()
