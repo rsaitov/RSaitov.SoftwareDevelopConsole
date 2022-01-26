@@ -19,7 +19,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             if (sender.GetRole() == WorkerRole.Manager)
             {
                 var workerName = ReadString("Введите имя сотрудника: ");
-                worker = _service.SelectWorker(workerName);
+                worker = _service.GetWorker(workerName);
                 if (ReferenceEquals(null, worker))
                 {
                     Notify("Ошибка: сотрудник не найден");

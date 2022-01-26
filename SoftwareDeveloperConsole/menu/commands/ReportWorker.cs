@@ -27,7 +27,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             {
                 var workerName = ReadString("Введите имя сотрудника: ");
 
-                var workerFromEnteredName = _service.SelectWorker(workerName);
+                var workerFromEnteredName = _service.GetWorker(workerName);
                 if (ReferenceEquals(null, workerFromEnteredName))
                     Notify($"Невозможно найти сотрудника {workerName}");
                 worker = workerFromEnteredName;

@@ -18,6 +18,6 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
             service = new Service(repository);
         }
 
-        public static IWorker GetFirstWorker(WorkerRole workerRole) => service.SelectWorkers().FirstOrDefault(x => x.GetRole() == workerRole);
+        public static IWorker GetFirstWorker(WorkerRole workerRole) => service.GetWorkers().FirstOrDefault(x => x.GetRole() == workerRole);
     }
 }

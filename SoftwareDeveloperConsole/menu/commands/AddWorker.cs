@@ -24,7 +24,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
                 return;
 
             var worker = WorkerFactory.GenerateWorker(workerName, (WorkerRole)workerRoleNumber);
-            var createWorkerResult = _service.CreateWorker(sender, worker);
+            var createWorkerResult = _service.AddWorker(sender, worker);
             if (!createWorkerResult)
             {
                 Notify("Ошибка: сотрудник не добавлен");

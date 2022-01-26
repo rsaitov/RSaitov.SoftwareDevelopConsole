@@ -24,7 +24,7 @@ namespace Test_Service
             while (true)
             {
                 var worker = WorkerGenerator.CreateRandomIWorker();
-                var userInDb = service.SelectWorker(worker.GetName());
+                var userInDb = service.GetWorker(worker.GetName());
                 if (ReferenceEquals(null, userInDb))
                     return worker;
             }
@@ -34,18 +34,18 @@ namespace Test_Service
         public void CreateNotExistedWorker_Success()
         {
             IWorker worker = GetRandomWorkerNotExisted();
-            var result = service.CreateWorker(CommonActions.GetFirstWorker(WorkerRole.Manager), worker);
+            var result = service.AddWorker(CommonActions.GetFirstWorker(WorkerRole.Manager), worker);
             Assert.IsTrue(result);
         }
 
         [Test]
         public void CreateExistedUser_Fail()
         {
-            var workers = service.SelectWorkers();
+            var workers = service.GetWorkers();
             if (workers.Count() == 0)
                 Assert.Pass("No workers in DB");
 
-            var result = service.CreateWorker(CommonActions.GetFirstWorker(WorkerRole.Manager), workers.First());
+            var result = service.AddWorker(CommonActions.GetFirstWorker(WorkerRole.Manager), workers.First());
             Assert.IsFalse(result);
         }
 
@@ -53,7 +53,7 @@ namespace Test_Service
         public void CreateWorkerSenderNoAccess_Fail()
         {
             IWorker worker = GetRandomWorkerNotExisted();
-            var result = service.CreateWorker(CommonActions.GetFirstWorker(WorkerRole.Employee), worker);
+            var result = service.AddWorker(CommonActions.GetFirstWorker(WorkerRole.Employee), worker);
             Assert.IsFalse(result);
         } 
     }

@@ -11,7 +11,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
         {
             Console.Write("Введите имя: ");
             var user = Console.ReadLine();
-            var worker = service.SelectWorker(user);
+            var worker = service.GetWorker(user);
 
             return worker;
         }

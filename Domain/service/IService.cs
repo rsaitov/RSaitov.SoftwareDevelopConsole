@@ -16,9 +16,9 @@ namespace RSaitov.SoftwareDevelop.Domain
 {
     public interface IService
     {
-        bool CreateWorker(IWorker sender, IWorker worker);
-        IWorker SelectWorker(string name);
-        IEnumerable<IWorker> SelectWorkers();
+        bool AddWorker(IWorker sender, IWorker worker);
+        IWorker GetWorker(string name);
+        IEnumerable<IWorker> GetWorkers();
 
         IEnumerable<TimeRecord> GetTimeRecords(IWorker worker);
         bool AddTimeRecord(IWorker sender, TimeRecord timeRecord);

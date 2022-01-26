@@ -36,7 +36,7 @@ namespace RSaitov.SoftwareDevelop.Domain
             _repository = repository;
         }
 
-        public bool CreateWorker(IWorker sender, IWorker worker)
+        public bool AddWorker(IWorker sender, IWorker worker)
         {
             if (!workerRolesAllowedToCreateWorkers.Contains(sender.GetRole()))
                 return false;
@@ -50,7 +50,7 @@ namespace RSaitov.SoftwareDevelop.Domain
 
         public bool AddTimeRecord(IWorker sender, TimeRecord timeRecord)
         {
-            var timeRecordWorker = SelectWorker(timeRecord.Name);
+            var timeRecordWorker = GetWorker(timeRecord.Name);
             if (ReferenceEquals(null, timeRecordWorker))
                 return false;
 
@@ -71,13 +71,13 @@ namespace RSaitov.SoftwareDevelop.Domain
             return _repository.InsertTimeRecord(timeRecord, timeRecordWorker.GetRole());
         }
 
-        public IWorker SelectWorker(string name)
+        public IWorker GetWorker(string name)
         {
             var worker = _repository.SelectWorker(name);
             return ReferenceEquals(null, worker) ? null :
                 WorkerFactory.GenerateWorker(worker.Name, worker.Role);
         }
-        public IEnumerable<IWorker> SelectWorkers()
+        public IEnumerable<IWorker> GetWorkers()
         {
             var workerDTOs = _repository.SelectWorkers();
 
@@ -110,7 +110,7 @@ namespace RSaitov.SoftwareDevelop.Domain
 
         public ReportAllWorkers GetReportAllWorkers(IWorker sender, DateTime start, DateTime end)
         {
-            var workers = SelectWorkers();
+            var workers = GetWorkers();
             var workerReports = new List<ReportSingleWorker>();
             foreach (var worker in workers)
             {
