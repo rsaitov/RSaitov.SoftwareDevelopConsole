@@ -15,12 +15,16 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
         }
         public void Execute(IWorker sender)
         {
-            var workerName = ReadString("Введите имя сотрудника: ");
-            var workerInDb = _service.SelectWorker(workerName);
-            if (ReferenceEquals(null, workerInDb))
+            var worker = sender;
+            if (sender.GetRole() == WorkerRole.Manager)
             {
-                Notify("Ошибка: сотрудник не найден");
-                return;
+                var workerName = ReadString("Введите имя сотрудника: ");
+                worker = _service.SelectWorker(workerName);
+                if (ReferenceEquals(null, worker))
+                {
+                    Notify("Ошибка: сотрудник не найден");
+                    return;
+                }
             }
 
             var dateString = ReadString("Введите дату в формате dd.MM.yyyy: ");
@@ -35,7 +39,8 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
 
             var description = ReadString("Введите описание: ");
 
-            var createTimeRecordResult = _service.AddTimeRecord(sender, new TimeRecord(date, workerName, (byte)hours, description));
+            var createTimeRecordResult = _service.AddTimeRecord(sender,
+                new TimeRecord(date, worker.GetName(), (byte)hours, description));
             if (!createTimeRecordResult)
             {
                 Notify("Ошибка: рабочие часы не добавлены");
