@@ -33,13 +33,17 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
                 worker = workerFromEnteredName;
             }
 
-            var dateStartString = ReadString("Введите дату начала в формате dd.MM.yyyy: ");
-            var dateStart = UserEnteredValueParser.ParseDate(dateStartString, Notify);
+            var defaultDateStart = "01.01.2022";
+            var dateStartString = ReadString($"Введите дату начала в формате dd.MM.yyyy (по умолчанию {defaultDateStart}): ");
+            var dateStart = UserEnteredValueParser.ParseDate(string.IsNullOrEmpty(dateStartString) ? defaultDateStart
+                : dateStartString, Notify);
             if (dateStart == DateTime.MinValue)
                 return;
 
-            var dateEndString = ReadString("Введите дату окончания в формате dd.MM.yyyy: ");
-            var dateEnd = UserEnteredValueParser.ParseDate(dateEndString, Notify);
+            var defaultDateEnd = "31.12.2022";
+            var dateEndString = ReadString($"Введите дату окончания в формате dd.MM.yyyy (по умолчанию {defaultDateEnd}): ");
+            var dateEnd = UserEnteredValueParser.ParseDate(string.IsNullOrEmpty(dateEndString) ? defaultDateEnd
+                : dateEndString, Notify);
             if (dateEnd == DateTime.MinValue)
                 return;
 
