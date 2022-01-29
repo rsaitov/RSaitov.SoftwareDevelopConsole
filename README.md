@@ -27,5 +27,5 @@ https://docs.google.com/document/d/1kZz1ozAwNTVkIxWoyPYI_zTw6mos3CI03MyXnCxNbeM/
 
 ## Что можно добавить ##
 
-- [СДЕЛАНО с использованием log4Net] логирование для хранения истории выполнения команд. Эдакая аналитика каким функционалом чаще пользуются (https://github.com/thangchung/awesome-dotnet-core#logging)
+- логирование для хранения истории выполнения команд. Эдакая аналитика каким функционалом чаще пользуются (https://github.com/thangchung/awesome-dotnet-core#logging) - [СДЕЛАНО с использованием log4Net] 
 - локализация (https://github.com/thangchung/awesome-dotnet-core#internationalization)
