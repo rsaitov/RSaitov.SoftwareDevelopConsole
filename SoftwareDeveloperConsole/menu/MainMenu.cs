@@ -69,7 +69,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             if (!result)
                 return null;
 
-            log.Debug($"GetCommand №{_commands[commandNumber - 1].Title()}");
+            log.Debug($"Выбрана команда {_commands[commandNumber - 1].Title()}");
             return _commands[commandNumber - 1];
         }
         public void ShowMenu()

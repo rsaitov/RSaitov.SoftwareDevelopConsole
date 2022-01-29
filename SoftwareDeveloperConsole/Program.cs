@@ -18,8 +18,10 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
         private static readonly ILog log = LogManager.GetLogger(typeof(Program));
         static void Main(string[] args)
         {
-            BasicConfigurator.Configure();
-            log.Info("Entering the app");
+            var log4netConfig = new System.IO.FileInfo("./log4net.config");
+            XmlConfigurator.Configure(log4netConfig);
+
+            log.Info("Запуск приложения...");
 
             var isUnauth = true;
             var auth = new AuthConsoleCommand();
@@ -58,8 +60,6 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
                 Console.WriteLine();
                 command.Execute(user);
             }
-
-            log.Info("Exiting the app");
         }
 
         static void ShowConsoleMessage(string message)
