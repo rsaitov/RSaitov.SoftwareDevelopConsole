@@ -1,4 +1,5 @@
-﻿using RSaitov.SoftwareDevelop.Data;
+﻿using log4net;
+using RSaitov.SoftwareDevelop.Data;
 using RSaitov.SoftwareDevelop.Domain;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
     public delegate string ReadString(string message);
     internal class MainMenu
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(MainMenu));
+
         public event SendMessage Notify;
         public event ReadString ReadString;
         private List<ICommand> _commands { get; }
@@ -66,6 +69,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             if (!result)
                 return null;
 
+            log.Debug($"Выбрана команда {_commands[commandNumber - 1].Title()}");
             return _commands[commandNumber - 1];
         }
         public void ShowMenu()

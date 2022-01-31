@@ -1,4 +1,6 @@
-﻿using RSaitov.SoftwareDevelop.Data;
+﻿using log4net;
+using log4net.Config;
+using RSaitov.SoftwareDevelop.Data;
 using System;
 
 /*
@@ -13,8 +15,13 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
 {
     class Program
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(Program));
         static void Main(string[] args)
         {
+            var log4netConfig = new System.IO.FileInfo("./log4net.config");
+            XmlConfigurator.Configure(log4netConfig);
+
+            log.Info("Запуск приложения...");
 
             var isUnauth = true;
             var auth = new AuthConsoleCommand();
