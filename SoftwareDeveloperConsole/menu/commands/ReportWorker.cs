@@ -33,14 +33,14 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
                 worker = workerFromEnteredName;
             }
 
-            var defaultDateStart = "01.01.2022";
+            var defaultDateStart = $"01.01.{DateTime.Now.Year}";
             var dateStartString = ReadString($"Введите дату начала в формате dd.MM.yyyy (по умолчанию {defaultDateStart}): ");
             var dateStart = UserEnteredValueParser.ParseDate(string.IsNullOrEmpty(dateStartString) ? defaultDateStart
                 : dateStartString, Notify);
             if (dateStart == DateTime.MinValue)
                 return;
 
-            var defaultDateEnd = "31.12.2022";
+            var defaultDateEnd = $"31.12.{DateTime.Now.Year}";
             var dateEndString = ReadString($"Введите дату окончания в формате dd.MM.yyyy (по умолчанию {defaultDateEnd}): ");
             var dateEnd = UserEnteredValueParser.ParseDate(string.IsNullOrEmpty(dateEndString) ? defaultDateEnd
                 : dateEndString, Notify);
