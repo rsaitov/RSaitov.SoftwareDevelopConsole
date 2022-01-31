@@ -17,11 +17,10 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
         public event SendMessage Notify;
         public event ReadString ReadString;
         private List<ICommand> _commands { get; }
-        private IRepository _repository = new MockRepository();
         private IService _service;
-        public MainMenu(IWorker worker)
+        public MainMenu(IService service, IWorker worker)
         {
-            _service = new Service(_repository);
+            _service = service;
 
             var addWorkerCommand = new AddWorker(_service);
             var reportAllWorkersCommand = new ReportAllWorkers(_service);

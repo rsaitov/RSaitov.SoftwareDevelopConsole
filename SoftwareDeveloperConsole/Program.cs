@@ -1,7 +1,10 @@
-﻿using log4net;
+﻿using Autofac;
+using log4net;
 using log4net.Config;
 using RSaitov.SoftwareDevelop.Data;
+using RSaitov.SoftwareDevelop.Domain;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 /*
  * Консольное приложение сотрудника
@@ -13,63 +16,18 @@ using System;
 
 namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
 {
-    class Program
+    [ExcludeFromCodeCoverage]
+    static class Program
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(Program));
         static void Main(string[] args)
         {
-            var log4netConfig = new System.IO.FileInfo("./log4net.config");
-            XmlConfigurator.Configure(log4netConfig);
+            IContainer container = ContainerConfig.Configure();
 
-            log.Info("Запуск приложения...");
-
-            var isUnauth = true;
-            var auth = new AuthConsoleCommand();
-            IWorker user = null;
-            while (isUnauth)
+            using (var scope = container.BeginLifetimeScope())
             {
-                var authResult = auth.Execute();
-                if (ReferenceEquals(null, authResult))
-                    Console.WriteLine("Сотрудник не найден");
-                else
-                {
-                    isUnauth = false;
-                    user = authResult;
-
-                    Console.WriteLine();
-                    Console.WriteLine("Добро пожаловать!");
-                    Console.WriteLine($"Ваша роль в системе: {user.GetRole()}.");
-                }
+                var app = scope.Resolve<Application>();
+                app.Run();
             }
-
-            var mainMenuCommand = new MainMenu(user);
-            mainMenuCommand.Notify += ShowConsoleMessage;
-            mainMenuCommand.ReadString += ReadLineString;
-            var exit = false;
-            while (!exit)
-            {
-                mainMenuCommand.ShowMenu();
-                Console.Write("$ ");
-                var commandNumber = Console.ReadLine();
-                var command = mainMenuCommand.GetCommand(commandNumber);
-                if (ReferenceEquals(null, command))
-                {
-                    Console.WriteLine("Невозможно распознать выбранную команду.");
-                    continue;
-                }
-                Console.WriteLine();
-                command.Execute(user);
-            }
-        }
-
-        static void ShowConsoleMessage(string message)
-        {
-            Console.WriteLine(message);
-        }
-        static string ReadLineString(string message)
-        {
-            Console.Write(message);
-            return Console.ReadLine();
         }
     }
 }

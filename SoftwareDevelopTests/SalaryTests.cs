@@ -3,6 +3,10 @@ using RSaitov.SoftwareDevelop.Data;
 using RSaitov.SoftwareDevelop.Domain;
 using RSaitov.SoftwareDevelop.SoftwareDevelopTests;
 
+/*
+ * Обязательно свой инстанс БД, чтобы часы работы сотрудников остались неизменными
+ */
+
 namespace Test_Salary
 {
     public class SalaryTests
