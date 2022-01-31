@@ -9,8 +9,8 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopTests
 {
     static class CommonActions
     {
-        public static IService Service;
-        public static IRepository Repository;
+        public static IService Service { get; set; }
+        public static IRepository Repository { get; set; }
         static CommonActions()
         {
             //repository = new TextFileDB();

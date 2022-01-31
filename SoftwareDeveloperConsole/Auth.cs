@@ -6,12 +6,16 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
 {
     internal class AuthConsoleCommand
     {
-        IService service = new Service(new MockRepository());
+        private IService _service;
+        public AuthConsoleCommand(IService service)
+        {
+            _service = service;
+        }
         public IWorker Execute()
         {
             Console.Write("Введите имя: ");
             var user = Console.ReadLine();
-            var worker = service.GetWorker(user);
+            var worker = _service.GetWorker(user);
 
             return worker;
         }
