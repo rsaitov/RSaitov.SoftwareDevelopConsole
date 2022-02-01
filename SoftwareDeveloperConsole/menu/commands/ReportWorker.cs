@@ -25,34 +25,40 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             var worker = sender;
             if (_sender.GetRole() == WorkerRole.Manager)
             {
-                var workerName = ReadString("Введите имя сотрудника: ");
+                var workerName = ReadString?.Invoke("Введите имя сотрудника: ");
 
                 var workerFromEnteredName = _service.GetWorker(workerName);
                 if (ReferenceEquals(null, workerFromEnteredName))
-                    Notify($"Невозможно найти сотрудника {workerName}");
+                    Notify?.Invoke($"Невозможно найти сотрудника {workerName}");
                 worker = workerFromEnteredName;
             }
 
+            if (ReferenceEquals(null, sender) || ReferenceEquals(null, worker))
+            {
+                Notify?.Invoke($"Сотрудник не определён");
+                return;
+            }
+
             var defaultDateStart = $"01.01.{DateTime.Now.Year}";
-            var dateStartString = ReadString($"Введите дату начала в формате dd.MM.yyyy (по умолчанию {defaultDateStart}): ");
+            var dateStartString = ReadString?.Invoke($"Введите дату начала в формате dd.MM.yyyy (по умолчанию {defaultDateStart}): ");
             var dateStart = UserEnteredValueParser.ParseDate(string.IsNullOrEmpty(dateStartString) ? defaultDateStart
                 : dateStartString, Notify);
             if (dateStart == DateTime.MinValue)
                 return;
 
             var defaultDateEnd = $"31.12.{DateTime.Now.Year}";
-            var dateEndString = ReadString($"Введите дату окончания в формате dd.MM.yyyy (по умолчанию {defaultDateEnd}): ");
+            var dateEndString = ReadString?.Invoke($"Введите дату окончания в формате dd.MM.yyyy (по умолчанию {defaultDateEnd}): ");
             var dateEnd = UserEnteredValueParser.ParseDate(string.IsNullOrEmpty(dateEndString) ? defaultDateEnd
                 : dateEndString, Notify);
             if (dateEnd == DateTime.MinValue)
                 return;
 
             var report = _service.GetReportSingleWorker(sender, worker, dateStart, dateEnd);
-            Notify($"Отчет по сотруднику: {report.Worker.GetName()} за период " +
+            Notify?.Invoke($"Отчет по сотруднику: {report.Worker.GetName()} за период " +
                 $"{report.Start.ToShortDateString()} по {report.End.ToShortDateString()}");
             foreach (var timeRecord in report.TimeRecords)
-                Notify($"{timeRecord.Date.ToShortDateString()}: {timeRecord.Hours} часов, {timeRecord.Description}");
-            Notify($"Итого: {report.Hours} часов, заработано: {report.Salary} руб");
+                Notify?.Invoke($"{timeRecord.Date.ToShortDateString()}: {timeRecord.Hours} часов, {timeRecord.Description}");
+            Notify?.Invoke($"Итого: {report.Hours} часов, заработано: {report.Salary} руб");
 
         }
         public bool Access(IWorker sender) => true;

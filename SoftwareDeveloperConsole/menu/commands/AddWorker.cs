@@ -17,8 +17,8 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
 
         public void Execute(IWorker sender)
         {
-            var workerName = ReadString("Введите имя сотрудника: ");
-            var workerRoleString = ReadString("Выберите роль сотрудника (1 - Manager, 2 - Employee, 3 - Freelancer): ");
+            var workerName = ReadString?.Invoke("Введите имя сотрудника: ");
+            var workerRoleString = ReadString?.Invoke("Выберите роль сотрудника (1 - Manager, 2 - Employee, 3 - Freelancer): ");
             int workerRoleNumber = UserEnteredValueParser.ParseInt(workerRoleString, Notify);
             if (workerRoleNumber == Int32.MinValue || workerRoleNumber < 1 || workerRoleNumber > 3)
                 return;
@@ -27,11 +27,11 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             var createWorkerResult = _service.AddWorker(sender, worker);
             if (!createWorkerResult)
             {
-                Notify("Ошибка: сотрудник не добавлен");
+                Notify?.Invoke("Ошибка: сотрудник не добавлен");
                 return;
             }
 
-            Notify("Сотрудник успешно добавлен");
+            Notify?.Invoke("Сотрудник успешно добавлен");
         }
         public bool Access(IWorker sender)
         {

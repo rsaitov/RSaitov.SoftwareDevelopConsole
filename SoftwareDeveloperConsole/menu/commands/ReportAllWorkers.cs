@@ -16,25 +16,25 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
         public void Execute(IWorker sender)
         {
             var defaultDateStart = $"01.01.{DateTime.Now.Year}";
-            var dateStartString = ReadString($"Введите дату начала в формате dd.MM.yyyy (по умолчанию {defaultDateStart}): ");
+            var dateStartString = ReadString?.Invoke($"Введите дату начала в формате dd.MM.yyyy (по умолчанию {defaultDateStart}): ");
             var dateStart = UserEnteredValueParser.ParseDate(string.IsNullOrEmpty(dateStartString) ? defaultDateStart
                 : dateStartString, Notify);
             if (dateStart == DateTime.MinValue)
                 return;
 
             var defaultDateEnd = $"31.12.{DateTime.Now.Year}";
-            var dateEndString = ReadString($"Введите дату окончания в формате dd.MM.yyyy (по умолчанию {defaultDateEnd}): ");
+            var dateEndString = ReadString?.Invoke($"Введите дату окончания в формате dd.MM.yyyy (по умолчанию {defaultDateEnd}): ");
             var dateEnd = UserEnteredValueParser.ParseDate(string.IsNullOrEmpty(dateEndString) ? defaultDateEnd 
                 : dateEndString, Notify);
             if (dateEnd == DateTime.MinValue)
                 return;
 
             var report = _service.GetReportAllWorkers(sender, dateStart, dateEnd);
-            Notify($"Отчет за период с {report.Start.ToShortDateString()} по {report.End.ToShortDateString()}");
+            Notify?.Invoke($"Отчет за период с {report.Start.ToShortDateString()} по {report.End.ToShortDateString()}");
             foreach(var workerReport in report.SingleWorkerReports)
-                Notify($"{workerReport.Worker.GetName()} отработал {workerReport.Hours} " +
+                Notify?.Invoke($"{workerReport.Worker.GetName()} отработал {workerReport.Hours} " +
                     $"часов и заработал за период {workerReport.Salary} рублей");
-            Notify($"Всего часов отработано за период {report.HoursTotal}, " +
+            Notify?.Invoke($"Всего часов отработано за период {report.HoursTotal}, " +
                 $"сумма к выплате {report.SalaryTotal}");
         }
         public bool Access(IWorker sender)

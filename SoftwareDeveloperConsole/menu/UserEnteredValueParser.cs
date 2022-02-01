@@ -10,7 +10,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             var result = DateTime.TryParse(inputString, out date);
             if (!result)
             {
-                Notify("Ошибка: дата не распознана");
+                Notify?.Invoke("Ошибка: дата не распознана");
                 return DateTime.MinValue;
             }
             return date;
@@ -21,7 +21,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             var result = Int32.TryParse(inputString, out intValue);
             if (!result)
             {
-                Notify("Ошибка: число не распознано");
+                Notify?.Invoke("Ошибка: число не распознано");
                 return int.MinValue;
             }
             return intValue;

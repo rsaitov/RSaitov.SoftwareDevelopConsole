@@ -18,36 +18,36 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             var worker = sender;
             if (sender.GetRole() == WorkerRole.Manager)
             {
-                var workerName = ReadString("Введите имя сотрудника: ");
+                var workerName = ReadString?.Invoke("Введите имя сотрудника: ");
                 worker = _service.GetWorker(workerName);
                 if (ReferenceEquals(null, worker))
                 {
-                    Notify("Ошибка: сотрудник не найден");
+                    Notify?.Invoke("Ошибка: сотрудник не найден");
                     return;
                 }
             }
 
-            var dateString = ReadString("Введите дату в формате dd.MM.yyyy: ");
+            var dateString = ReadString?.Invoke("Введите дату в формате dd.MM.yyyy: ");
             var date = UserEnteredValueParser.ParseDate(dateString, Notify);
             if (date == DateTime.MinValue)
                 return;
 
-            var hoursString = ReadString("Введите количество часов: ");
+            var hoursString = ReadString?.Invoke("Введите количество часов: ");
             int hours = UserEnteredValueParser.ParseInt(hoursString, Notify);
             if (hours == Int32.MinValue)
                 return;
 
-            var description = ReadString("Введите описание: ");
+            var description = ReadString?.Invoke("Введите описание: ");
 
             var createTimeRecordResult = _service.AddTimeRecord(sender,
                 new TimeRecord(date, worker.GetName(), (byte)hours, description));
             if (!createTimeRecordResult)
             {
-                Notify("Ошибка: рабочие часы не добавлены");
+                Notify?.Invoke("Ошибка: рабочие часы не добавлены");
                 return;
             }
 
-            Notify("Рабочие часы успешно добавлены");
+            Notify?.Invoke("Рабочие часы успешно добавлены");
         }
         public bool Access(IWorker sender) => true;
 
