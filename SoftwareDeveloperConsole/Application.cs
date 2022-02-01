@@ -4,6 +4,12 @@ using RSaitov.SoftwareDevelop.Data;
 using RSaitov.SoftwareDevelop.Domain;
 using System;
 
+/*
+ * Что можно улучшить:
+ * меню крутится в бесконечном цикле, команда "выход" завершает приложение
+ * лучше чтобы цикл корректно завершался, получив команду "выход" от объекта MainMenu
+ */
+
 namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
 {
     public class Application
