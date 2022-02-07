@@ -7,9 +7,9 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
     {
         public event SendMessage Notify;
         public event ReadString ReadString;
-        public void Execute(IWorker sender)
+        public ResponseObject Execute(IWorker sender)
         {
-            Environment.Exit(0);
+            return new ResponseObject(true, "exit");
         }
         public bool Access(IWorker sender) => true;
 
