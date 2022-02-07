@@ -63,7 +63,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
                 }
                 Console.WriteLine();
                 var response = command.Execute(user);
-                if (!string.IsNullOrEmpty(response.Message) && response.Message == "exit")
+                if (!string.IsNullOrEmpty(response.Value) && response.Value == "exit")
                     exit = true;
             }
         }
