@@ -20,7 +20,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             _sender = sender;
             _service = service;
         }
-        public void Execute(IWorker sender)
+        public ResponseObject Execute(IWorker sender)
         {
             var worker = sender;
             if (_sender.GetRole() == WorkerRole.Manager)
@@ -35,8 +35,9 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
 
             if (ReferenceEquals(null, sender) || ReferenceEquals(null, worker))
             {
-                Notify?.Invoke($"Сотрудник не определён");
-                return;
+                var message = "Сотрудник не определён";
+                Notify?.Invoke(message);
+                return new ResponseObject(message);
             }
 
             var defaultDateStart = $"01.01.{DateTime.Now.Year}";
@@ -44,14 +45,14 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             var dateStart = UserEnteredValueParser.ParseDate(string.IsNullOrEmpty(dateStartString) ? defaultDateStart
                 : dateStartString, Notify);
             if (dateStart == DateTime.MinValue)
-                return;
+                new ResponseObject("Ошибка: дата не распознана");
 
             var defaultDateEnd = $"31.12.{DateTime.Now.Year}";
             var dateEndString = ReadString?.Invoke($"Введите дату окончания в формате dd.MM.yyyy (по умолчанию {defaultDateEnd}): ");
             var dateEnd = UserEnteredValueParser.ParseDate(string.IsNullOrEmpty(dateEndString) ? defaultDateEnd
                 : dateEndString, Notify);
             if (dateEnd == DateTime.MinValue)
-                return;
+                new ResponseObject("Ошибка: дата не распознана");
 
             var report = _service.GetReportSingleWorker(sender, worker, dateStart, dateEnd);
             Notify?.Invoke($"Отчет по сотруднику: {report.Worker.GetName()} за период " +
@@ -60,6 +61,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
                 Notify?.Invoke($"{timeRecord.Date.ToShortDateString()}: {timeRecord.Hours} часов, {timeRecord.Description}");
             Notify?.Invoke($"Итого: {report.Hours} часов, заработано: {report.Salary} руб");
 
+            return new ResponseObject(true);
         }
         public bool Access(IWorker sender) => true;
 

@@ -12,7 +12,6 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             return new ResponseObject(true, "exit");
         }
         public bool Access(IWorker sender) => true;
-
         public string Title() => "Выход из программы";
     }
 }
