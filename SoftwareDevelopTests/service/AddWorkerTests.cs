@@ -30,7 +30,7 @@ namespace Test_Service
         {
             IWorker worker = GetRandomWorkerNotExisted();
             var result = service.AddWorker(CommonActions.GetFirstWorker(WorkerRole.Manager), worker);
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Success);
         }
 
         [Test]
@@ -41,7 +41,8 @@ namespace Test_Service
                 Assert.Pass("No workers in DB");
 
             var result = service.AddWorker(CommonActions.GetFirstWorker(WorkerRole.Manager), workers.First());
-            Assert.IsFalse(result);
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual("Сотрудник с таким именем уже существует", result.Message);
         }
 
         [Test]
@@ -49,7 +50,8 @@ namespace Test_Service
         {
             IWorker worker = GetRandomWorkerNotExisted();
             var result = service.AddWorker(CommonActions.GetFirstWorker(WorkerRole.Employee), worker);
-            Assert.IsFalse(result);
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual("Нет доступа к созданию сотрудников", result.Message);
         }
     }
 }

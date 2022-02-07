@@ -7,7 +7,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
         event SendMessage Notify;
         event ReadString ReadString;
         bool Access(IWorker sender);
-        void Execute(IWorker sender);
+        ResponseObject Execute(IWorker sender);
         string Title();
     }
 }

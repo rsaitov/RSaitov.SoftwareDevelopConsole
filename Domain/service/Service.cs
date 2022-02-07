@@ -36,16 +36,16 @@ namespace RSaitov.SoftwareDevelop.Domain
             _repository = repository;
         }
 
-        public bool AddWorker(IWorker sender, IWorker worker)
+        public ResponseObject AddWorker(IWorker sender, IWorker worker)
         {
             if (!workerRolesAllowedToCreateWorkers.Contains(sender.GetRole()))
-                return false;
+                return new ResponseObject("Нет доступа к созданию сотрудников");
 
             var workerInDb = _repository.SelectWorker(worker.GetName());
             if (ReferenceEquals(null, workerInDb))
-                return _repository.InsertWorker(new WorkerDTO(worker.GetName(), worker.GetRole()));
+                return new ResponseObject(true, _repository.InsertWorker(new WorkerDTO(worker.GetName(), worker.GetRole())));
 
-            return false;
+            return new ResponseObject("Сотрудник с таким именем уже существует");
         }
 
         public bool AddTimeRecord(IWorker sender, TimeRecord timeRecord)

@@ -13,7 +13,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
         {
             _service = service;
         }
-        public void Execute(IWorker sender)
+        public ResponseObject Execute(IWorker sender)
         {
             var worker = sender;
             if (sender.GetRole() == WorkerRole.Manager)
@@ -22,20 +22,21 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
                 worker = _service.GetWorker(workerName);
                 if (ReferenceEquals(null, worker))
                 {
-                    Notify?.Invoke("Ошибка: сотрудник не найден");
-                    return;
+                    var message = "Ошибка: сотрудник не найден";
+                    Notify?.Invoke(message);
+                    return new ResponseObject(message);
                 }
             }
 
             var dateString = ReadString?.Invoke("Введите дату в формате dd.MM.yyyy: ");
             var date = UserEnteredValueParser.ParseDate(dateString, Notify);
             if (date == DateTime.MinValue)
-                return;
+                new ResponseObject("Ошибка: дата не распознана");
 
             var hoursString = ReadString?.Invoke("Введите количество часов: ");
             int hours = UserEnteredValueParser.ParseInt(hoursString, Notify);
             if (hours == Int32.MinValue)
-                return;
+                new ResponseObject("Ошибка: дата не распознана");
 
             var description = ReadString?.Invoke("Введите описание: ");
 
@@ -43,11 +44,13 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
                 new TimeRecord(date, worker.GetName(), (byte)hours, description));
             if (!createTimeRecordResult)
             {
-                Notify?.Invoke("Ошибка: рабочие часы не добавлены");
-                return;
+                var message = "Ошибка: рабочие часы не добавлены";
+                Notify?.Invoke(message);
+                return new ResponseObject(message);
             }
 
             Notify?.Invoke("Рабочие часы успешно добавлены");
+            return new ResponseObject(true);
         }
         public bool Access(IWorker sender) => true;
 
