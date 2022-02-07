@@ -13,21 +13,21 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
         {
             _service = service;
         }
-        public void Execute(IWorker sender)
+        public ResponseObject Execute(IWorker sender)
         {
             var defaultDateStart = $"01.01.{DateTime.Now.Year}";
             var dateStartString = ReadString?.Invoke($"Введите дату начала в формате dd.MM.yyyy (по умолчанию {defaultDateStart}): ");
             var dateStart = UserEnteredValueParser.ParseDate(string.IsNullOrEmpty(dateStartString) ? defaultDateStart
                 : dateStartString, Notify);
             if (dateStart == DateTime.MinValue)
-                return;
+                new ResponseObject("Ошибка: дата не распознана");
 
             var defaultDateEnd = $"31.12.{DateTime.Now.Year}";
             var dateEndString = ReadString?.Invoke($"Введите дату окончания в формате dd.MM.yyyy (по умолчанию {defaultDateEnd}): ");
             var dateEnd = UserEnteredValueParser.ParseDate(string.IsNullOrEmpty(dateEndString) ? defaultDateEnd 
                 : dateEndString, Notify);
             if (dateEnd == DateTime.MinValue)
-                return;
+                new ResponseObject("Ошибка: дата не распознана");
 
             var report = _service.GetReportAllWorkers(sender, dateStart, dateEnd);
             Notify?.Invoke($"Отчет за период с {report.Start.ToShortDateString()} по {report.End.ToShortDateString()}");
@@ -36,6 +36,8 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
                     $"часов и заработал за период {workerReport.Salary} рублей");
             Notify?.Invoke($"Всего часов отработано за период {report.HoursTotal}, " +
                 $"сумма к выплате {report.SalaryTotal}");
+
+            return new ResponseObject(true);
         }
         public bool Access(IWorker sender)
         {
