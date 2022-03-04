@@ -7,16 +7,23 @@ namespace RSaitov.SoftwareDevelop.Data
 {
     public class TextFileDB : IRepository
     {
-        private static string _personsFile = @"C:\tmp\SoftwareDevelopFiles\person.csv";
-        private static string _managerHoursFile = @"C:\tmp\SoftwareDevelopFiles\manager_hours.csv";
-        private static string _employeeHoursFile = @"C:\tmp\SoftwareDevelopFiles\employee_hours.csv";
-        private static string _freelanceHoursFile = @"C:\tmp\SoftwareDevelopFiles\freelance_hours.csv";
+        private static string _fileFolder = $"{Environment.GetEnvironmentVariable("temp")}\\SoftwareDevelopFiles\\";
+        private static string _personsFile = $"{_fileFolder}person.csv";
+        private static string _managerHoursFile = $"{_fileFolder}manager_hours.csv";
+        private static string _employeeHoursFile = $"{_fileFolder}employee_hours.csv";
+        private static string _freelanceHoursFile = $"{_fileFolder}freelance_hours.csv";
 
         private static string[] _filesDB = new string[] { _personsFile, _managerHoursFile, _employeeHoursFile, _freelanceHoursFile };
 
         public TextFileDB()
         {
+            CreateFolderIfNotExist(_fileFolder);
             CreateFilesIfNotExist();
+        }
+        private static void CreateFolderIfNotExist(string folderPath)
+        {
+            if (!Directory.Exists(folderPath))
+                Directory.CreateDirectory(folderPath);
         }
         private static void CreateFilesIfNotExist()
         {
