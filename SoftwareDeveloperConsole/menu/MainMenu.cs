@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using Autofac;
+using log4net;
 using RSaitov.SoftwareDevelop.Data;
 using RSaitov.SoftwareDevelop.Domain;
 using System;
@@ -17,41 +18,43 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
         public event SendMessage Notify;
         public event ReadString ReadString;
         private List<ICommand> _commands { get; }
-        private IService _service;
-        public MainMenu(IService service, IWorker worker)
+        public MainMenu(IWorker worker)
         {
-            _service = service;
+            using (var scope = ContainerConfig.Container.BeginLifetimeScope())
+            {
+                var service = scope.Resolve<IService>();
 
-            var addWorkerCommand = new AddWorker(_service);
-            var reportAllWorkersCommand = new ReportAllWorkers(_service);
-            var reportWorkerCommand = new ReportWorker(worker, _service);
-            var addTimeRecordCommand = new AddTimeRecord(_service);
-            var exitCommand = new ExitCommand();
+                var addWorkerCommand = new AddWorker(service);
+                var reportAllWorkersCommand = new ReportAllWorkers(service);
+                var reportWorkerCommand = new ReportWorker(worker, service);
+                var addTimeRecordCommand = new AddTimeRecord(service);
+                var exitCommand = new ExitCommand();
 
-            addWorkerCommand.Notify += SendToNotify;
-            reportAllWorkersCommand.Notify += SendToNotify;
-            reportWorkerCommand.Notify += SendToNotify;
-            addTimeRecordCommand.Notify += SendToNotify;
-            exitCommand.Notify += SendToNotify;
+                addWorkerCommand.Notify += SendToNotify;
+                reportAllWorkersCommand.Notify += SendToNotify;
+                reportWorkerCommand.Notify += SendToNotify;
+                addTimeRecordCommand.Notify += SendToNotify;
+                exitCommand.Notify += SendToNotify;
 
-            addWorkerCommand.ReadString += SendReadString;
-            reportAllWorkersCommand.ReadString += SendReadString;
-            reportWorkerCommand.ReadString += SendReadString;
-            addTimeRecordCommand.ReadString += SendReadString;
-            exitCommand.ReadString += SendReadString;
+                addWorkerCommand.ReadString += SendReadString;
+                reportAllWorkersCommand.ReadString += SendReadString;
+                reportWorkerCommand.ReadString += SendReadString;
+                addTimeRecordCommand.ReadString += SendReadString;
+                exitCommand.ReadString += SendReadString;
 
-            _commands = new List<ICommand>();
+                _commands = new List<ICommand>();
 
-            if (addWorkerCommand.Access(worker))
-                _commands.Add(addWorkerCommand);
-            if (addTimeRecordCommand.Access(worker))
-                _commands.Add(addTimeRecordCommand);
-            if (reportAllWorkersCommand.Access(worker))
-                _commands.Add(reportAllWorkersCommand);
-            if (reportWorkerCommand.Access(worker))
-                _commands.Add(reportWorkerCommand);
-            if (exitCommand.Access(worker))
-                _commands.Add(exitCommand);
+                if (addWorkerCommand.Access(worker))
+                    _commands.Add(addWorkerCommand);
+                if (addTimeRecordCommand.Access(worker))
+                    _commands.Add(addTimeRecordCommand);
+                if (reportAllWorkersCommand.Access(worker))
+                    _commands.Add(reportAllWorkersCommand);
+                if (reportWorkerCommand.Access(worker))
+                    _commands.Add(reportWorkerCommand);
+                if (exitCommand.Access(worker))
+                    _commands.Add(exitCommand);
+            }
         }
         private void SendToNotify(string message)
         {

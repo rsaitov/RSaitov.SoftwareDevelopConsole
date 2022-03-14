@@ -15,10 +15,9 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
     public class Application
     {
         private static readonly ILog log = LogManager.GetLogger(typeof(Program));
-        private IService _service;
-        public Application(IService service)
+        public Application()
         {
-            _service = service;
+            ContainerConfig.RegisterDependencies();
         }
         public void Run()
         {
@@ -28,7 +27,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             log.Info("Запуск приложения...");
 
             var isUnauth = true;
-            var auth = new AuthConsoleCommand(_service);
+            var auth = new AuthConsoleCommand();
             IWorker user = null;
             while (isUnauth)
             {
@@ -46,7 +45,7 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
                 }
             }
 
-            var mainMenuCommand = new MainMenu(_service, user);
+            var mainMenuCommand = new MainMenu(user);
             mainMenuCommand.Notify += ShowConsoleMessage;
             mainMenuCommand.ReadString += ReadLineString;
             var exit = false;

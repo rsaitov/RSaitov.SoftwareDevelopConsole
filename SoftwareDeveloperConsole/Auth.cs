@@ -1,4 +1,5 @@
-﻿using RSaitov.SoftwareDevelop.Data;
+﻿using Autofac;
+using RSaitov.SoftwareDevelop.Data;
 using RSaitov.SoftwareDevelop.Domain;
 using System;
 
@@ -6,18 +7,20 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
 {
     internal class AuthConsoleCommand
     {
-        private IService _service;
-        public AuthConsoleCommand(IService service)
+        public AuthConsoleCommand()
         {
-            _service = service;
         }
         public IWorker Execute()
         {
-            Console.Write("Введите имя: ");
-            var user = Console.ReadLine();
-            var worker = _service.GetWorker(user);
+            using (var scope = ContainerConfig.Container.BeginLifetimeScope())
+            {
+                var service = scope.Resolve<IService>();
+                Console.Write("Введите имя: ");
+                var user = Console.ReadLine();
+                var worker = service.GetWorker(user);
 
-            return worker;
+                return worker;
+            }
         }
     }
 }
