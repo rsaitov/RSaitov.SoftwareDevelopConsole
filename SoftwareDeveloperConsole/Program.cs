@@ -14,8 +14,8 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
     {
         static void Main(string[] args)
         {
-            var config = ContainerConfig.Configure();
-            config.Resolve<Application>().Run();
+            var app = new Application();
+            app.Run();
         }
     }
 }

@@ -6,19 +6,19 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
-{
+{    
     public static class ContainerConfig
     {
-        public static IContainer Configure()
+        private static IContainer _container;
+        public static IContainer Container => _container ?? (_container = Builder.Build());
+
+        private static ContainerBuilder _builder;
+        public static ContainerBuilder Builder => _builder ?? (_builder = new ContainerBuilder());
+        public static void RegisterDependencies()
         {
-            var builder = new ContainerBuilder();
-
-            builder.RegisterType<Application>().AsSelf();
-
-            builder.RegisterType<TextFileDB>().As<IRepository>();
-            builder.RegisterType<Service>().As<IService>();
-
-            return builder.Build();
+            Builder.RegisterType<Application>().AsSelf();
+            Builder.RegisterType<TextFileDB>().As<IRepository>();
+            Builder.RegisterType<Service>().As<IService>();
         }
     }
 }
