@@ -39,11 +39,15 @@ namespace RSaitov.SoftwareDevelop.Domain
         public ResponseObject AddWorker(IWorker sender, IWorker worker)
         {
             if (!workerRolesAllowedToCreateWorkers.Contains(sender.GetRole()))
+            {
                 return new ResponseObject("Нет доступа к созданию сотрудников");
+            }
 
             var workerInDb = _repository.SelectWorker(worker.GetName());
             if (ReferenceEquals(null, workerInDb))
+            {
                 return new ResponseObject(true, _repository.InsertWorker(new WorkerDTO(worker.GetName(), worker.GetRole())));
+            }
 
             return new ResponseObject("Сотрудник с таким именем уже существует");
         }
@@ -52,21 +56,29 @@ namespace RSaitov.SoftwareDevelop.Domain
         {
             var timeRecordWorker = GetWorker(timeRecord.Name);
             if (ReferenceEquals(null, timeRecordWorker))
+            {
                 return false;
+            }
 
             if (timeRecord.Hours > 24)
+            {
                 return false;
+            }
 
             var senderPersonMatchTimeRecord = string.Equals(sender.GetName(), timeRecord.Name);
             var timeRecordDayDiff = (DateTime.Now - timeRecord.Date).TotalDays;
 
             if (!senderPersonMatchTimeRecord &&
                 !workerRolesAllowedToCreateTimeRecordsForAllWorkers.Contains(sender.GetRole()))
+            {
                 return false;
+            }
 
             if (timeRecordDayDiff > 2 &&
                 !workerRolesAllowedToCreateTimeRecordsForAnyDateInPast.Contains(sender.GetRole()))
+            {
                 return false;
+            }
 
             return _repository.InsertTimeRecord(timeRecord, timeRecordWorker.GetRole());
         }
@@ -96,7 +108,9 @@ namespace RSaitov.SoftwareDevelop.Domain
 
             if (!senderPersonMatchTimeRecord &&
                 !workerRolesAllowedToViewReportAllWorkers.Contains(sender.GetRole()))
+            {
                 return null;
+            }
 
             var roleTimeRecords = _repository.SelectTimeRecords(worker.GetRole());
             var workerTimeRecords = roleTimeRecords

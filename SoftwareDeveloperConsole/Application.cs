@@ -33,7 +33,9 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
             {
                 var authResult = auth.Execute();
                 if (ReferenceEquals(null, authResult))
+                {
                     Console.WriteLine("Сотрудник не найден");
+                }
                 else
                 {
                     isUnauth = false;
@@ -63,7 +65,9 @@ namespace RSaitov.SoftwareDevelop.SoftwareDevelopConsole
                 Console.WriteLine();
                 var response = command.Execute(user);
                 if (!string.IsNullOrEmpty(response.Value) && response.Value == "exit")
+                {
                     exit = true;
+                }
             }
         }
 
